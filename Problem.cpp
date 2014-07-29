@@ -122,23 +122,13 @@ void Problem::makeOrders ()
     int oid = 0;
 
     // add the depot to the order list
-    Order order;
-    order.oid = oid++;
-    order.pid = 0;
-    order.did = 0;
-    order.dist = 0.0;
-    order.dist2 = 0.0;
+    Order order(oid++);
     O.push_back(order);
 
     // for each pickup, get its delivery and create an order
     for (int i=1; i<getNodeCount(); i++) {
         if (N[i].pid == 0) {
-            Order order;
-            order.oid = oid++;
-            order.pid = i;
-            order.did = N[i].did;
-            order.dist = distance(0, i);
-            order.dist2 = distance(order.did, 0);
+            Order order(oid++,i,N[i].did,distance(0,i),distance(N[i].did,0));
             O.push_back(order);
         }
     }
