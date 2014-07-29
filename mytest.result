@@ -1,3 +1,11 @@
+g++ -g -O0 -MMD -MP -c Order.cpp -o Order.o
+g++ -g -O0 -MMD -MP -c Plot.cpp -o Plot.o
+g++ -g -O0 -MMD -MP -c Problem.cpp -o Problem.o
+g++ -g -O0 -MMD -MP -c Route.cpp -o Route.o
+g++ -g -O0 -MMD -MP -c Solution.cpp -o Solution.o
+g++ -g -O0 -MMD -MP -c TabuSearch.cpp -o TabuSearch.o
+g++ -g -O0 -MMD -MP -c vrpdptw.cpp -o vrpdptw.o
+g++ Node.o Order.o Plot.o Problem.o Route.o Solution.o TabuSearch.o vrpdptw.o -o vrpdptw -lgd
 ./vrpdptw lc101.txt
 Problem 'lc101.txt'loaded
 ---- Problem -------------
