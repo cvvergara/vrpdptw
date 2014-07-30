@@ -15,12 +15,14 @@ void Solution::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
     int M = 0;
     R.clear();
-    int numUnassigned = P.O.size() - 1;
+    //int numUnassigned = P.O.size() - 1;
+    int numUnassigned = P.getOrderCount()-1;
     while (numUnassigned > 0) {
         Route r(P);
         r.rid = M;
 
-        for (int i=0; i<P.O.size(); i++) {
+  //      for (int i=0; i<P.O.size(); i++) {
+        for (int i=0; i<P.getOrderCount(); i++) {
             if (P.O[i].oid == 0) continue;    // don't add the depot
             if (mapOtoR[P.O[i].oid] != -1) continue; // search unassigned orders
 

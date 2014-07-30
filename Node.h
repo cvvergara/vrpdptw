@@ -1,5 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
+#include <math.h>
+
 
 #include <iostream>
 
@@ -14,6 +16,19 @@ class Node {
     int service;    // service time
     int pid;        // pickup (id of sibling)
     int did;        // delivery (id of sibling)
+
+    bool isDepot() const {return nid==0;};
+
+    double distance(const Node &n2) const {
+         double dx = n2.x - x;
+         double dy = n2.y - y;
+         return sqrt( dx*dx + dy*dy );
+    };
+
+    int windowLength() const {
+         return  tw_close - tw_open;
+    };
+
 
     // Node() {};
     // ~Node() {};

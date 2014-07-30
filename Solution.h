@@ -17,7 +17,7 @@ class Solution {
     double totalDistance;
     double totalCost;
 
-    Solution(Problem& p) : P(p) {
+    Solution(Problem& p): P(p) {
         totalDistance = 0;
         totalCost = 0;
         mapOtoR.clear();

@@ -10,6 +10,7 @@
 
 #include "Node.h"
 #include "Order.h"
+class Solution;
 
 const double w1 = 1.0;  // route duration weighting
 const double w2 = 1000.0;  // total number of time violations weight
@@ -20,9 +21,11 @@ class Problem {
     int K;      // number of vehicles
     int Q;      // capacity
     int DepotClose;
+    Node depot;
     double atwl;
     std::vector<Node> N;    // vector of nodes
     std::vector<Order> O;   // vector of orders
+
 
     // variables for plotting
     double extents[4];
@@ -37,6 +40,8 @@ class Problem {
     unsigned int getOrderCount();
 
     double distance(int n1, int n2) const;
+    double DepotToPickup(int n1) const ;
+    double DepotToDelivery(int n1) const ;
 
     void makeOrders();
 

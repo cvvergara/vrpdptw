@@ -22,10 +22,19 @@ unsigned int Problem::getOrderCount() {
     return (unsigned int) O.size();
 }
 
-double Problem::distance(int n1, int n2) const {
-    double dx = N[n2].x - N[n1].x;
+double Problem::DepotToDelivery(int n1) const {
+    return N[N[n1].did].distance(depot);
+}
+
+double Problem::DepotToPickup(int n1) const {
+    return N[n1].distance(depot);
+}
+
+double Problem::distance(int n1,int n2) const {
+    return N[n1].distance(N[n2]);
+/*    double dx = N[n2].x - N[n1].x;
     double dy = N[n2].y - N[n1].y;
-    return sqrt( dx*dx + dy*dy );
+    return sqrt( dx*dx + dy*dy );*/
 }
 
 void Problem::dump() {
@@ -89,8 +98,11 @@ void Problem::loadProblem(char *infile)
 
         N.push_back(node);
 
-        if (node.nid == 0)
+        //if (node.nid == 0)
+        if (node.isDepot()) {
             DepotClose = node.tw_close;
+            depot = node;
+        }
     }
     in.close();
 
@@ -128,7 +140,8 @@ void Problem::makeOrders ()
     // for each pickup, get its delivery and create an order
     for (int i=1; i<getNodeCount(); i++) {
         if (N[i].pid == 0) {
-            Order order(oid++,i,N[i].did,distance(0,i),distance(N[i].did,0));
+            //Order order(oid++,i,N[i].did,N[i].distance(N[0]),N[N[i].did].distance(N[0]));
+            Order order(oid++,i,N[i].did,DepotToPickup(i),DepotToDelivery(i));
             O.push_back(order);
         }
     }
@@ -139,7 +152,8 @@ void Problem::calcAvgTWLen() {
     // get the average time window length
     atwl = 0;
     for (int i=0; i<N.size(); i++)
-        atwl += (N[i].tw_close - N[i].tw_open);
+        atwl += N[i].windowLength();
+        //atwl += (N[i].tw_close - N[i].tw_open);
     atwl /= N.size();
 };
 
