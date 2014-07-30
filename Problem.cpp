@@ -134,8 +134,8 @@ void Problem::makeOrders ()
     int oid = 0;
 
     // add the depot to the order list
-    Order order(oid++);
-    O.push_back(order);
+//    Order order(oid++);
+//    O.push_back(order);
 
     // for each pickup, get its delivery and create an order
     for (int i=1; i<getNodeCount(); i++) {

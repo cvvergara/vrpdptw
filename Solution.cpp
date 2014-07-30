@@ -23,7 +23,7 @@ void Solution::sequentialConstruction() {
 
   //      for (int i=0; i<P.O.size(); i++) {
         for (int i=0; i<P.getOrderCount(); i++) {
-            if (P.O[i].oid == 0) continue;    // don't add the depot
+//            if (P.O[i].oid == 0) continue;    // don't add the depot
             if (mapOtoR[P.O[i].oid] != -1) continue; // search unassigned orders
 
             r.addOrder(P.O[i]);
@@ -56,7 +56,7 @@ void Solution::initialConstruction() {
     R.clear();
 
     for (int i=0; i<P.O.size(); i++) {
-        if (P.O[i].oid == 0) continue;    // don't add the depot
+ //       if (P.O[i].oid == 0) continue;    // don't add the depot
         Route r(P);
         r.rid = M++;
         r.addOrder(P.O[i]);
