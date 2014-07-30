@@ -97,7 +97,8 @@ bool TabuSearch::doSPI() {
     bestMove.savings = 0.0;
 
     // oid==0 is the depot
-    for ( int oid=1; oid<S.P.O.size(); oid++) {
+    //for ( int oid=1; oid<S.P.O.size(); oid++) {
+    for ( int oid=0; oid<S.P.getOrderCount(); oid++) {
         if (S.mapOtoR[oid] == -1) {
             std::cout << "ERROR: S.mapOtoR[oid] == -1 for oid: "
                       << oid << std::endl;
@@ -211,17 +212,23 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
 
     // for each order
     // oid==0 is the depot
-    for ( int oid1=1; oid1<S.P.O.size(); oid1++) {
+    //for ( int oid1=1; oid1<S.P.O.size(); oid1++) {
+    for ( int oid1=0; oid1<S.P.getOrderCount(); oid1++) {
         int currentRoute = S.mapOtoR[oid1];
         // swap it for another order not in the current route
-        for ( int oid2=1; oid2<S.P.O.size(); oid2++) {
+        //for ( int oid2=1; oid2<S.P.O.size(); oid2++) {
+        for ( int oid2=0; oid2<S.P.getOrderCount(); oid2++) {
+std::cout << "1 TabuSearch::doSBR(): " << oid1<<','<<oid2<<std::endl;;
             if (oid1 == oid2) continue;
             if (currentRoute == S.mapOtoR[oid2]) continue;
+std::cout << "2 TabuSearch::doSBR() currentRoute<S.R.size: " << currentRoute<<','<<S.R.size()<<std::endl;;
             Route r1(S.R[currentRoute]);
             double r1oldc = r1.getCost();
+std::cout << "2.1 TabuSearch::doSBR() S.mapOtoR[oid2]<S.R.size: " << S.mapOtoR[oid2]<<','<<S.R.size()<<std::endl;;
             Route r2(S.R[S.mapOtoR[oid2]]);
             double r2oldc = r2.getCost();
 
+std::cout << "2.2 TabuSearch::doSBR(): old costs" << r1oldc<<','<<r2oldc<<std::endl;
             Move m;
             m.moveType = 2;
             m.oid1 = oid1;
@@ -233,6 +240,7 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
             std::vector<int> r2p(r2.path);
 
             for (int i=0; i<r1p.size(); i++) {
+std::cout << "3 TabuSearch::doSBR(): " <<i<< std::endl;;
                 if (r1p[i] == S.P.O[oid1].pid) {
                     r1p[i] = S.P.O[oid2].pid;
                     m.ppos1 = i;
@@ -245,6 +253,7 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
             }
 
             for (int i=0; i<r2p.size(); i++) {
+std::cout << "4 TabuSearch::doSBR(): " <<i<< std::endl;;
                 if (r2p[i] == S.P.O[oid2].pid) {
                     r2p[i] = S.P.O[oid1].pid;
                     m.ppos2 = i;
