@@ -22,12 +22,24 @@ unsigned int Problem::getOrderCount() {
     return (unsigned int) O.size();
 }
 
+int Problem::getOrderOid(int i) const{
+    return O[i].oid;
+    //return  (i>=0 && i < O.size()) ? O[i].oid :1;
+};
+
+Order Problem::getOrder(int i) const {
+    return O[i];
+    //return  (i>=0 && i <= O.size()) ? O[i]: O[0] ;
+}
+
 double Problem::DepotToDelivery(int n1) const {
-    return N[N[n1].did].distance(depot);
+    return  (n1>=0 && n1 <= N.size()) ? N[N[n1].did].distance(depot):-1;
+    //return N[N[n1].did].distance(depot);
 }
 
 double Problem::DepotToPickup(int n1) const {
-    return N[n1].distance(depot);
+    return  (n1>=0 && n1 <= N.size()) ? N[n1].distance(depot):-1;
+    //return N[n1].distance(depot);
 }
 
 double Problem::distance(int n1,int n2) const {
@@ -35,6 +47,40 @@ double Problem::distance(int n1,int n2) const {
 /*    double dx = N[n2].x - N[n1].x;
     double dy = N[n2].y - N[n1].y;
     return sqrt( dx*dx + dy*dy );*/
+}
+
+bool Problem::ProblemIntegrity() const {
+   bool flag=true;
+   int nodesCant=N.size();
+   int ordersCant=O.size();
+   if (N.empty()) {
+        std::cout << "Nodes is empty\n";
+        flag=false; }
+   else std::cout << "# of Nodes:"<<nodesCant<<"\n";
+
+   if (O.empty()) {
+        std::cout << "Orders is empty\n";
+        flag=false;}
+   else std::cout << "# of Orders:"<<ordersCant<<"\n";
+
+   if (ordersCant != (nodesCant-1)/2) {
+        std::cout << "Expected "<<(nodesCant-1)/2<<" Orders. Found "<<ordersCant<<" Orders\n";
+        flag=false;}
+   else std::cout << "Found expected # of Orders\n";
+
+  for (std::vector<Node>::const_iterator it= N.begin(); it!=N.end(); ++it) {
+     bool flag1=true;
+     Node node=*it;
+     if (node.pickupId()<0 or node.pickupId()>nodesCant) {
+        std::cout << "Node["<<node.nid<<"]: pickup id out of range:"<<node.pickupId()<<"\n";
+        flag1=false;}
+     if (node.deliveryId()<0 or node.deliveryId()>nodesCant) {
+        std::cout << "Node["<<node.nid<<"]: pickup id out of range:"<<node.deliveryId()<<"\n";
+        flag1=false;}
+     flag= flag1 and flag;
+     if (flag1)  std::cout << "Pickup and delivery IDs are OK\n";
+   }
+   return flag;
 }
 
 void Problem::dump() {
@@ -78,8 +124,8 @@ void Problem::loadProblem(char *infile)
 
     // read the nodes
     while ( getline(in, line) ) {
-        Node node;
-        std::istringstream buffer( line );
+        Node node(line);
+       /*std::istringstream buffer( line );
         buffer >> node.nid;
         buffer >> node.x;
         buffer >> node.y;
@@ -89,7 +135,7 @@ void Problem::loadProblem(char *infile)
         buffer >> node.service;
         buffer >> node.pid;
         buffer >> node.did;
-
+*/
         // compute the extents as we load the data for plotting
         if (node.x < extents[0]) extents[0] = node.x;
         if (node.y < extents[1]) extents[1] = node.y;
@@ -133,9 +179,9 @@ void Problem::makeOrders ()
 
     int oid = 0;
 
-    // add the depot to the order list
-//    Order order(oid++);
-//    O.push_back(order);
+    // add the depot to the order   --- DEPOT doesnt have an order
+    Order order(oid++);
+    O.push_back(order);
 
     // for each pickup, get its delivery and create an order
     for (int i=1; i<getNodeCount(); i++) {

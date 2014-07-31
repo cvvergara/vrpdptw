@@ -30,9 +30,11 @@ int Order::setOrder(int i_oid, int i_pid, int i_did, double i_dist, double i_dis
 
 int Order::getoid(){ return oid;}
 int Order::getpid(){return pid;}
+int Order::getRoute(){return routeId;}
 int Order::getdid(){return did;}
 double Order::getDistFromPickup(){return dist;}
 double Order::getDistFromDelivery(){return dist2;}
+void  Order::moveOrder(int toRoute) {routeId=toRoute;}
 
 
 void Order::dump() {

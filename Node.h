@@ -1,5 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
+#include <stdexcept>
 #include <math.h>
 
 
@@ -28,9 +29,13 @@ class Node {
     int windowLength() const {
          return  tw_close - tw_open;
     };
+    int pickupId() const { return pid;};
+    int deliveryId() const {return did;};
 
+    bool earlyArrival(double D){ return D < tw_open;};
 
-    // Node() {};
+    Node() {};
+    Node(std::string line) ;
     // ~Node() {};
 
     void dump();

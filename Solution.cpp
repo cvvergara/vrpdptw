@@ -1,9 +1,7 @@
-
 #include "Route.h"
 #include "Solution.h"
 
 // NON class functions for sorting
-
 bool sortByOid(Order a, Order b)
 {
     return a.oid < b.oid;
@@ -16,7 +14,7 @@ void Solution::sequentialConstruction() {
     int M = 0;
     R.clear();
     //int numUnassigned = P.O.size() - 1;
-    int numUnassigned = P.getOrderCount()-1;
+    int numUnassigned = P.getOrderCount()-1; //-1 because of Oredr[0] from DEPOT
     while (numUnassigned > 0) {
         Route r(P);
         r.rid = M;
@@ -24,20 +22,27 @@ void Solution::sequentialConstruction() {
   //      for (int i=0; i<P.O.size(); i++) {
         for (int i=0; i<P.getOrderCount(); i++) {
 //            if (P.O[i].oid == 0) continue;    // don't add the depot
-            if (mapOtoR[P.O[i].oid] != -1) continue; // search unassigned orders
+//            if (mapOtoR[P.O[i].oid] != -1) continue; // search unassigned orders
+            if (P.getOrderOid(i) == 0) continue;    // don't add the depot
+            if (mapOtoR[P.getOrderOid(i)] != -1) continue; // search unassigned orders
 
-            r.addOrder(P.O[i]);
-            mapOtoR[P.O[i].oid] = r.rid;
+//            r.addOrder(P.O[i]);
+//            mapOtoR[P.O[i].oid] = r.rid;
+
+            r.addOrder(P.getOrder(i));
+            mapOtoR[P.getOrderOid(i)] = r.rid;
             r.hillClimbOpt();
 
             // if route is not feasible
             if (r.orders.size() > 1 && (r.TWV > 0 || r.CV > 0)) {
                 r.removeOrder(P.O[i]);
-                mapOtoR[P.O[i].oid] = -1;
+//                mapOtoR[P.O[i].oid] = -1;
+                mapOtoR[P.getOrderOid(i)] = -1;
             }
             // else if it is feasible
             else {
-                mapOtoR[P.O[i].oid] = r.rid;
+//                mapOtoR[P.O[i].oid] = r.rid;
+                mapOtoR[P.getOrderOid(i)] = r.rid;
                 numUnassigned--;
             }
         }
@@ -55,12 +60,18 @@ void Solution::initialConstruction() {
     int M = 0;
     R.clear();
 
-    for (int i=0; i<P.O.size(); i++) {
- //       if (P.O[i].oid == 0) continue;    // don't add the depot
+    for (int i=0; i<P.getOrderCount(); i++) {
+//    for (int i=0; i<P.O.size(); i++) {
+//       if (P.O[i].oid == 0) continue;    // don't add the depot
+       if (P.getOrderOid(i) == 0) continue;    // don't add the depot
         Route r(P);
         r.rid = M++;
-        r.addOrder(P.O[i]);
-        mapOtoR[P.O[i].oid] = r.rid;
+//        r.addOrder(P.O[i]);
+//        mapOtoR[P.O[i].oid] = r.rid;
+        r.addOrder(P.getOrder(i));
+        mapOtoR[P.getOrderOid(i)] = r.rid;
+        r.addOrder(P.getOrder(i));
+        mapOtoR[P.getOrderOid(i)] = r.rid;
         R.push_back(r);
     }
 
@@ -77,10 +88,12 @@ void Solution::computeCosts() {
 }
 
 double Solution::getCost() {
+    computeCosts();    // somewhere in the code the getcost returns 0 because the cost hant been computed
     return totalCost;
 }
 
 double Solution::getDistance() {
+    computeCosts();
     return totalDistance;
 }
 

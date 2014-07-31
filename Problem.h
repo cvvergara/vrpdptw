@@ -36,12 +36,16 @@ class Problem {
     void loadProblem(char *infile);
 
     unsigned int getNodeCount();
+    bool ProblemIntegrity() const;
 
     unsigned int getOrderCount();
 
     double distance(int n1, int n2) const;
     double DepotToPickup(int n1) const ;
     double DepotToDelivery(int n1) const ;
+    int getOrderOid(int i) const;
+    Order getOrder(int i) const;
+    bool earlyArrival(double D,int i){ return N[i].earlyArrival(D);};
 
     void makeOrders();
 

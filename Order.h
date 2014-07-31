@@ -9,6 +9,7 @@ class Order {
     int oid;        // order id
     int pid;        // pickup node id
     int did;        // delivery node id
+    int routeId;      // routID
     double dist;    // distance from depot to pickup location
     double dist2;   // distance from delivery to depot
 
@@ -20,9 +21,11 @@ class Order {
     int setOrder(int i_oid, int i_pid, int i_did, double i_dist, double i_dist2);
     int getoid();
     int getpid();
+    int getRoute();
     int getdid();
     double getDistFromPickup();
     double getDistFromDelivery();
+    void  moveOrder(int toRoute);
 
     // ~Order() {};
 

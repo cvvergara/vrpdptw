@@ -20,9 +20,9 @@ Route::Route(Problem& p) : P(p) {
 
 
 void Route::update() {
-    D = 0;
-    TWV = 0;
-    CV = 0;
+    D = 0;  //duration
+    TWV = 0; //Time window violation
+    CV = 0;  //Capacity violations
     int q = 0;  // current used capcity
 
     for (int i=0; i<path.size(); i++) {
@@ -54,6 +54,7 @@ std::cout << "@@@@@@@@\n";
         }
 
         // if we arrive before the tw open time, we have to wait till then
+        if (D < P.N[path[i]].tw_open)
         if (D < P.N[path[i]].tw_open)
             D = P.N[path[i]].tw_open;
 

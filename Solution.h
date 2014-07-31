@@ -57,6 +57,14 @@ class Solution {
                abs(totalCost - another.totalCost) < EPSILON;
     };
 
+ bool solutionEquivalent (Solution &another)  {
+        computeCosts();
+        another.computeCosts();
+        return R.size() == another.R.size() &&
+               abs(totalCost - another.totalCost) < EPSILON;
+
+    };
+
     bool operator <  (Solution &another) const {
         return R.size() < another.R.size() || totalCost < another.totalCost;
     };
