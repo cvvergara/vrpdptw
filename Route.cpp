@@ -19,11 +19,42 @@ Route::Route(Problem& p) : P(p) {
 };
 
 
+bool Route::earlyArrival(int pathstop, double D) const {
+    return P.earlyArrival(path[pathstop],D);
+}
+
+bool Route::lateArrival(int pathstop, double D) const {
+    return P.lateArrival(path[pathstop],D);
+}
+
+double Route::distanceToPrev(int pathstop) {
+     if (pathstop == 0)  return P.distance(0, path[pathstop]);
+     else  return P.distance(path[pathstop-1], path[pathstop]);
+}
+
+double Route::distanceToNext(int pathstop) {
+     if (pathstop == path.size()-1)  return P.distance(0, path[pathstop]);
+     else  return P.distance(path[pathstop+1], path[pathstop]);
+}
+
+int Route::nodeDemand(int pathstop) const {
+    return P.nodeDemand(path[pathstop]);
+}
+
+int Route::nodeServiceTime(int pathstop) const {
+    return P.nodeServiceTime(path[pathstop]);
+}
+
+
+bool Route::capacityViolation(double q) const {
+    return (q<0 and q>P.Q);
+}
+/*
 void Route::update() {
-    D = 0;  //duration
-    TWV = 0; //Time window violation
-    CV = 0;  //Capacity violations
-    int q = 0;  // current used capcity
+    D = 0;
+    TWV = 0;
+    CV = 0;
+    int q = 0; // current used capcity
 
     for (int i=0; i<path.size(); i++) {
         // add the distance from the previous stop
@@ -35,26 +66,25 @@ void Route::update() {
 
             // if the current distance is > previous node close time
             if (D > P.N[path[i]].tw_close) {
-/*
-std::cout << "@@@@ Route::update TWV\n    rid: " << rid << ", D: " << D << ", i: " << i << ", tw_close: " << P.N[path[i]].tw_close << "\n    [";
-    for (int i=0; i<path.size(); i++) {
-        if (i) std::cout << ", ";
-        std::cout << path[i];
-    }
-    std::cout << "], [";
-    for (int i=0; i<orders.size(); i++) {
-        if (i) std::cout << ", ";
-        std::cout << orders[i];
-    }
-    std::cout << "]" << std::endl;
+*********
+std::cout << "@@@@ Route::update TWV\n rid: " << rid << ", D: " << D << ", i: " << i << ", tw_close: " << P.N[path[i]].tw_close << "\n [";
+for (int i=0; i<path.size(); i++) {
+if (i) std::cout << ", ";
+std::cout << path[i];
+}
+std::cout << "], [";
+for (int i=0; i<orders.size(); i++) {
+if (i) std::cout << ", ";
+std::cout << orders[i];
+}
+std::cout << "]" << std::endl;
 std::cout << "@@@@@@@@\n";
-*/
+********
                 TWV++;
             }
         }
 
         // if we arrive before the tw open time, we have to wait till then
-        if (D < P.N[path[i]].tw_open)
         if (D < P.N[path[i]].tw_open)
             D = P.N[path[i]].tw_open;
 
@@ -64,8 +94,8 @@ std::cout << "@@@@@@@@\n";
             CV++;
 
         // update the capacity and pdist lists
-        // capacity[i] = q;    // capacity after node is loaded
-        // pdist[i] = D;       // distance at node max(arrival time, tw_open)
+        // capacity[i] = q; // capacity after node is loaded
+        // pdist[i] = D; // distance at node max(arrival time, tw_open)
 
         // add the service time for this node
         D += P.N[path[i]].service;
@@ -75,7 +105,7 @@ std::cout << "@@@@@@@@\n";
     if (path.size())
         D += P.distance(path[path.size()-1], 0);
     if (D > P.DepotClose) {
-//std::cout << "@@@@ Route::update TWV\n    rid: " << rid << ", D: " << D << " @ DepotClose: " << P.DepotClose << std::endl;
+//std::cout << "@@@@ Route::update TWV\n rid: " << rid << ", D: " << D << " @ DepotClose: " << P.DepotClose << std::endl;
         TWV++;
     }
 
@@ -85,11 +115,46 @@ std::cout << "@@@@@@@@\n";
 };
 
 
+*/
+
+void Route::update() {
+    D = 0; //duration
+    TWV = 0; //Time window violation
+    CV = 0; //Capacity violations
+    int q = 0; // current used capcity
+
+    for (int i=0; i<path.size(); i++) {
+        D += distanceToPrev(i);
+        if (lateArrival(i,D)) TWV++;
+
+        // if we arrive before the tw open time, we have to wait till then
+        if (earlyArrival(i,D))  D = P.N[path[i]].tw_open;
+
+        // add the demand for this node and check for violation
+        q += nodeDemand(i);
+        if (capacityViolation(q)) CV++;
+
+        // add the service time for this node
+        D +=nodeServiceTime(i);
+    }
+
+    // add the distance between last delivery node and depot
+    if (path.size()) D += distanceToNext(path.size()-1);
+    //if (D > P.DepotClose) {
+    if (P.depot.lateArrival(D))  TWV++;
+    cost = w1*D + w2*TWV + w3*CV;
+    updated = false;
+};
+
+
+
+
+
 double Route::testPath(const std::vector<int>& tp) {
     tD = 0;
     tTWV = 0;
     tCV = 0;
-    int q = 0;  // current used capcity
+    int q = 0; // current used capcity
 
     for (int i=0; i<tp.size(); i++) {
         // add the distance from the previous stop
@@ -114,8 +179,8 @@ double Route::testPath(const std::vector<int>& tp) {
             tCV++;
 
         // update the capacity and pdist lists
-        // capacity[i] = q;    // capacity after node is loaded
-        // pdist[i] = D;       // distance at node max(arrival time, tw_open)
+        // capacity[i] = q; // capacity after node is loaded
+        // pdist[i] = D; // distance at node max(arrival time, tw_open)
 
         // add the service time for this node
         tD += P.N[tp[i]].service;
@@ -129,6 +194,8 @@ double Route::testPath(const std::vector<int>& tp) {
 
     return w1*tD + w2*tTWV + w3*tCV;
 };
+
+
 
 
 double Route::getCost() {
@@ -157,11 +224,13 @@ bool Route::insertOrder(int oid, bool mustBeValid) {
 
     Node& np = P.N[P.O[oid].pid];
     Node& nd = P.N[P.O[oid].did];
+//    Node& np = P.getPickupNodeFromOrder(oid);
+//    Node& nd = P.getDeliveryNodeFromOrder(oid);
 
     double bestTestCost = std::numeric_limits<double>::max();
     int bestPosition = -1;
-    std::vector<int> newpath;   // path with predecessor inserted
-    std::vector<int> newpath2;  // path with predecessot and successor inserted
+    std::vector<int> newpath; // path with predecessor inserted
+    std::vector<int> newpath2; // path with predecessot and successor inserted
 
     for (int i=0; i<path.size(); i++) {
         newpath = path;
@@ -316,3 +385,4 @@ void Route::dump() {
     }
     std::cout << "]" << std::endl;
 }
+
