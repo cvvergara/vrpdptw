@@ -27,6 +27,42 @@ int Problem::getOrderOid(int i) const{
     //return  (i>=0 && i < O.size()) ? O[i].oid :1;
 };
 
+int Problem::getOrderPid(int i) const{
+    return O[i].pid;
+    //return  (i>=0 && i < O.size()) ? O[i].oid :1;
+};
+
+int Problem::getOrderDid(int i) const{
+    return O[i].did;
+    //return  (i>=0 && i < O.size()) ? O[i].oid :1;
+};
+
+Node& Problem::getDeliveryNodeFromOrder(int i){
+    return N[getOrderDid(i)];
+}
+
+Node& Problem::getPickupNodeFromOrder(int i){
+    return N[getOrderPid(i)];
+}
+
+double Problem::nodeDemand(int i) const {
+    return N[i].getDemand();
+}
+
+bool Problem::lateArrival(int nid,double D) const {
+    return N[nid].lateArrival(D);
+}
+
+bool Problem::earlyArrival(int nid,double D) const {
+    return N[nid].earlyArrival(D);
+}
+
+
+double Problem::nodeServiceTime(int nid) const {
+//    std::cout << "Problem service node"<<nid<<"="<< N[nid].getServiceTime()<<"\n";
+    return N[nid].getServiceTime();
+}
+
 Order Problem::getOrder(int i) const {
     return O[i];
     //return  (i>=0 && i <= O.size()) ? O[i]: O[0] ;
@@ -49,7 +85,7 @@ double Problem::distance(int n1,int n2) const {
     return sqrt( dx*dx + dy*dy );*/
 }
 
-bool Problem::ProblemIntegrity() const {
+bool Problem::checkIntegrity() const {
    bool flag=true;
    int nodesCant=N.size();
    int ordersCant=O.size();
@@ -71,14 +107,11 @@ bool Problem::ProblemIntegrity() const {
   for (std::vector<Node>::const_iterator it= N.begin(); it!=N.end(); ++it) {
      bool flag1=true;
      Node node=*it;
-     if (node.pickupId()<0 or node.pickupId()>nodesCant) {
-        std::cout << "Node["<<node.nid<<"]: pickup id out of range:"<<node.pickupId()<<"\n";
-        flag1=false;}
-     if (node.deliveryId()<0 or node.deliveryId()>nodesCant) {
-        std::cout << "Node["<<node.nid<<"]: pickup id out of range:"<<node.deliveryId()<<"\n";
-        flag1=false;}
-     flag= flag1 and flag;
-     if (flag1)  std::cout << "Pickup and delivery IDs are OK\n";
+     flag= flag and node.checkIntegrity(nodesCant);
+   }
+  for (std::vector<Order>::const_iterator it= O.begin(); it!=O.end(); ++it) {
+     Order order=*it;
+     flag= flag and order.checkIntegrity(nodesCant);
    }
    return flag;
 }

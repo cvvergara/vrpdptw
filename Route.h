@@ -27,6 +27,7 @@ class Route {
 //    std::vector<double> pdist;  // distance at node max(arrival time, tw_open)
     bool updated;
     int D;      // duration
+    //double D;      // duration
     int TWV;    // TW violations
     int CV;     // capacity violations
     double cost;
@@ -43,8 +44,14 @@ class Route {
     Route &operator = (const Route &r) { P = r.P; return *this; };
 
     void update();
-
+    bool earlyArrival(int pathstop,double D) const;
+    bool lateArrival(int  pathstop,double D) const;
+    double distanceToPrev(int pathstop);
+    double distanceToNext(int pathstop);
+    int nodeDemand(int pathstop) const;   
+    int nodeServiceTime (int pathstop) const;   
     double testPath(const std::vector<int>& tp);
+    bool capacityViolation(double q) const;
 
     double getCost();
 
@@ -53,11 +60,9 @@ class Route {
     bool insertOrder(int oid, bool mustBeValid);
 
     void removeOrder(const Order &o);
-
     void removeOrder(const int oid);
 
     int addPickup(const Order &o);
-
     void addDelivery(const Order &o);
 
     void hillClimbOpt();

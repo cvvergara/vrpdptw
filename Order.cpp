@@ -35,6 +35,16 @@ int Order::getdid(){return did;}
 double Order::getDistFromPickup(){return dist;}
 double Order::getDistFromDelivery(){return dist2;}
 void  Order::moveOrder(int toRoute) {routeId=toRoute;}
+bool Order::checkIntegrity(int nodesCant) {
+     bool flag=true;
+     if (pid<0 or pid>nodesCant) {
+        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<pid<<"expected in [0,"<<nodesCant<<"] \n";
+        flag=false;}
+     if (did<0 or did>nodesCant) {
+        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<did<<"expected in [0,"<<nodesCant<<"] \n";
+        flag=false;}
+     return flag;
+}
 
 
 void Order::dump() {

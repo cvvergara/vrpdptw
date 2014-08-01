@@ -36,7 +36,7 @@ class Problem {
     void loadProblem(char *infile);
 
     unsigned int getNodeCount();
-    bool ProblemIntegrity() const;
+    bool checkIntegrity() const;
 
     unsigned int getOrderCount();
 
@@ -44,8 +44,16 @@ class Problem {
     double DepotToPickup(int n1) const ;
     double DepotToDelivery(int n1) const ;
     int getOrderOid(int i) const;
+    int getOrderPid(int i) const;
+    int getOrderDid(int i) const;
+    double nodeDemand(int i) const;
+    double nodeServiceTime(int i) const;
+    bool earlyArrival(int nid,double D) const; 
+    bool lateArrival(int nid,double D) const; 
+    Node& getDeliveryNodeFromOrder(int i);
+    Node& getPickupNodeFromOrder(int i);
+
     Order getOrder(int i) const;
-    bool earlyArrival(double D,int i){ return N[i].earlyArrival(D);};
 
     void makeOrders();
 

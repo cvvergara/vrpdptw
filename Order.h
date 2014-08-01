@@ -23,6 +23,7 @@ class Order {
     int getpid();
     int getRoute();
     int getdid();
+    bool checkIntegrity(int nodesCant);
     double getDistFromPickup();
     double getDistFromDelivery();
     void  moveOrder(int toRoute);

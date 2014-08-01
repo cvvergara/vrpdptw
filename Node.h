@@ -31,8 +31,13 @@ class Node {
     };
     int pickupId() const { return pid;};
     int deliveryId() const {return did;};
-
-    bool earlyArrival(double D){ return D < tw_open;};
+    bool checkIntegrity(int nodesCant);
+    bool earlyArrival(double D) const { return D < tw_open;};
+    bool lateArrival(double D) const { return D > tw_close;};
+    double getDemand() const{ return demand;};
+    double getServiceTime() const{  
+//    std::cout << "Problem service node"<<nid<<"="<< service<<"\n";
+         return service;};
 
     Node() {};
     Node(std::string line) ;

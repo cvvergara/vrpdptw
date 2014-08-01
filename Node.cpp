@@ -14,6 +14,17 @@ Node::Node(std::string line) {
         buffer >> did;
 }
 
+bool Node::checkIntegrity(int nodesCant) {
+     bool flag=true;
+     if (pid<0 or pid>nodesCant) {
+        std::cout << "Order["<<nid<<"]: pickup id out of range:"<<pid<<"expected in [0,"<<nodesCant<<"] \n";
+        flag=false;}
+     if (did<0 or did>nodesCant) {
+        std::cout << "Order["<<nid<<"]: pickup id out of range:"<<did<<"expected in [0,"<<nodesCant<<"] \n";
+        flag=false;}
+     return flag;
+}
+
 
 void Node::dump() {
     std::cout << nid << ", "
