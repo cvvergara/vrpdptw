@@ -4,8 +4,8 @@
 #include <vector>
 #include <cmath>
 
-#include "Problem.h"
-#include "Route.h"
+#include "problem.h"
+#include "route.h"
 
 const double EPSILON = 0.001;
 
@@ -29,6 +29,8 @@ class Solution {
 
     void dump();
 
+    void dumbConstruction();
+    void withSortedOrdersConstruction();
     void sequentialConstruction();
 
     void initialConstruction();

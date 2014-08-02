@@ -1,7 +1,7 @@
 #include <gd.h>
 #include <stdio.h>
 
-#include "Plot.h"
+#include "plot.h"
 
 inline int Plot::scalex(double x) {
     return (int)((x - cx) * scale + (double) width/2.0);
@@ -40,21 +40,21 @@ int Plot::out(std::string file, bool labelNodes, int iwidth, int iheight, char *
     for (int i=0; i<S.R.size(); i++) {
         if (! S.R[i].path.size()) continue;
         int x1, y1, x2, y2;
-        x1 = scalex(P.N[0].x);
-        y1 = scaley(P.N[0].y);
-        x2 = scalex(P.N[S.R[i].path[0]].x);
-        y2 = scaley(P.N[S.R[i].path[0]].y);
+        x1 = scalex(P.N[0].getx());
+        y1 = scaley(P.N[0].gety());
+        x2 = scalex(P.N[S.R[i].path[0]].getx());
+        y2 = scaley(P.N[S.R[i].path[0]].gety());
         gdImageLine(im, x1, y1, x2, y2, gdAntiAliased);
-        x1 = scalex(P.N[0].x);
-        y1 = scaley(P.N[0].y);
-        x2 = scalex(P.N[S.R[i].path.back()].x);
-        y2 = scaley(P.N[S.R[i].path.back()].y);
+        x1 = scalex(P.N[0].getx());
+        y1 = scaley(P.N[0].gety());
+        x2 = scalex(P.N[S.R[i].path.back()].getx());
+        y2 = scaley(P.N[S.R[i].path.back()].gety());
         gdImageLine(im, x1, y1, x2, y2, gdAntiAliased);
         for (int j=1; j<S.R[i].path.size(); j++) {
-            x1 = scalex(P.N[S.R[i].path[j-1]].x);
-            y1 = scaley(P.N[S.R[i].path[j-1]].y);
-            x2 = scalex(P.N[S.R[i].path[j]].x);
-            y2 = scaley(P.N[S.R[i].path[j]].y);
+            x1 = scalex(P.N[S.R[i].path[j-1]].getx());
+            y1 = scaley(P.N[S.R[i].path[j-1]].gety());
+            x2 = scalex(P.N[S.R[i].path[j]].getx());
+            y2 = scaley(P.N[S.R[i].path[j]].gety());
             gdImageLine(im, x1, y1, x2, y2, gdAntiAliased);
         }
     }
@@ -62,13 +62,13 @@ int Plot::out(std::string file, bool labelNodes, int iwidth, int iheight, char *
     // draw the nodes RED for depot, Grreen for pickup Blue for delivery
     int color;
     for (int i=0; i<P.N.size(); i++) {
-        double x = scalex(P.N[i].x);
-        double y = scaley(P.N[i].y);
+        double x = scalex(P.N[i].getx());
+        double y = scaley(P.N[i].gety());
 
         if (i == 0) {   // depot
             gdImageFilledEllipse(im, x, y, 11, 11, 0x00ff0000);
         }
-        else if (P.N[i].demand >0) {  // pickup
+        else if (P.N[i].getDemand() >0) {  // pickup
             gdImageFilledEllipse(im, x, y, 7, 7, 0x0000ff00);
         }
         else {  //delivery
@@ -83,8 +83,8 @@ int Plot::out(std::string file, bool labelNodes, int iwidth, int iheight, char *
         for (int i=0; i<P.N.size(); i++) {
             char str[80];
             int x, y;
-            x = scalex(P.N[i].x);
-            y = scaley(P.N[i].y);
+            x = scalex(P.N[i].getx());
+            y = scaley(P.N[i].gety());
             sprintf(str, "%d", i);
             gdImageStringFT(im, NULL, 0x00000000, font, 6, 0, x, y-5, str);
         }

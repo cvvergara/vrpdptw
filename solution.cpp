@@ -1,5 +1,5 @@
-#include "Route.h"
-#include "Solution.h"
+#include "route.h"
+#include "solution.h"
 
 // NON class functions for sorting
 bool sortByOid(Order a, Order b)
@@ -9,25 +9,34 @@ bool sortByOid(Order a, Order b)
 
 // Class functions
 
+
+void Solution::dumbConstruction() {
+    Route dumbroute(P);
+        for (int i=0; i<P.getOrderCount(); i++) {
+           dumbroute.addOrder(P.getOrder(i));
+        }
+    dumbroute.dump();
+    R.push_back(dumbroute);
+};
+     
+void Solution::withSortedOrdersConstruction() {
+    P.sortOrdersbyDist();
+    dumbConstruction();
+};
+
+
 void Solution::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
     int M = 0;
     R.clear();
     //int numUnassigned = P.O.size() - 1;
-    int numUnassigned = P.getOrderCount()-1; //-1 because of Oredr[0] from DEPOT
+    int numUnassigned = P.getOrderCount(); //-1 because of Oredr[0] from DEPOT
     while (numUnassigned > 0) {
         Route r(P);
         r.rid = M;
 
-  //      for (int i=0; i<P.O.size(); i++) {
         for (int i=0; i<P.getOrderCount(); i++) {
-//            if (P.O[i].oid == 0) continue;    // don't add the depot
-//            if (mapOtoR[P.O[i].oid] != -1) continue; // search unassigned orders
-            if (P.getOrderOid(i) == 0) continue;    // don't add the depot
-            if (mapOtoR[P.getOrderOid(i)] != -1) continue; // search unassigned orders
-
-//            r.addOrder(P.O[i]);
-//            mapOtoR[P.O[i].oid] = r.rid;
+            if (P.isAsignedOrder(i)) continue; 
 
             r.addOrder(P.getOrder(i));
             mapOtoR[P.getOrderOid(i)] = r.rid;

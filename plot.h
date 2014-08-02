@@ -5,8 +5,8 @@
 
 class Route;    // forward reference
 
-#include "Problem.h"
-#include "Solution.h"
+#include "problem.h"
+#include "solution.h"
 
 class Plot {
   public:

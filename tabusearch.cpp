@@ -1,6 +1,6 @@
 
-#include "TabuSearch.h"
-#include "Plot.h"
+#include "tabusearch.h"
+#include "plot.h"
 #include <cstdio>
 
 inline void swap(int& a, int& b) {
@@ -459,9 +459,9 @@ if (m.oid1 == 42 || m.oid2 == 42) {
             S.R[m.rid1].removeOrder(m.oid1);
             // insert the order in this route
             it = S.R[m.rid2].path.begin();
-            S.R[m.rid2].path.insert(it+m.ppos1, S.P.N[S.P.O[m.oid1].pid].nid);
+            S.R[m.rid2].path.insert(it+m.ppos1, S.P.N[S.P.O[m.oid1].pid].getnid());
             it = S.R[m.rid2].path.begin();
-            S.R[m.rid2].path.insert(it+m.spos1, S.P.N[S.P.O[m.oid1].did].nid);
+            S.R[m.rid2].path.insert(it+m.spos1, S.P.N[S.P.O[m.oid1].did].getnid());
             it = S.R[m.rid2].orders.begin();
             S.R[m.rid2].orders.insert(it+m.ppos1, m.oid1);
             it = S.R[m.rid2].orders.begin();

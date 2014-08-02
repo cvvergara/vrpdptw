@@ -1,8 +1,8 @@
 #ifndef TABU_H
 #define TABU_H
 
-#include "Problem.h"
-#include "Move.h"
+#include "problem.h"
+#include "move.h"
 
 class Tabu {
   public:

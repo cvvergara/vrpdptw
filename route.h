@@ -12,10 +12,10 @@
 
 class Solution;     // forward reference
 
-#include "Order.h"
+#include "order.h"
 #include "pathnode.h"
 #include "path.h"
-#include "Problem.h"
+#include "problem.h"
 
 class Route {
   public:
@@ -30,8 +30,8 @@ class Route {
 //    std::vector<int> capacity;  // capacity after node is loaded
 //    std::vector<double> pdist;  // distance at node max(arrival time, tw_open)
     bool updated;
-    int D;      // duration
-    //double D;      // duration
+    //int D;      // duration
+    double D;      // duration
     int TWV;    // TW violations
     int CV;     // capacity violations
     double cost;
@@ -59,7 +59,7 @@ class Route {
 
     double getCost();
 
-    void addOrder(const Order &o);
+    void addOrder(Order &o);
 
     bool insertOrder(int oid, bool mustBeValid);
 

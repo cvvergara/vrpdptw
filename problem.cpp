@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <math.h>
 
-#include "Problem.h"
+#include "order.h"
+#include "problem.h"
 
 // NON class functions for sorting
 
@@ -23,8 +24,8 @@ unsigned int Problem::getOrderCount() {
 }
 
 int Problem::getOrderOid(int i) const{
-    return O[i].oid;
-    //return  (i>=0 && i < O.size()) ? O[i].oid :1;
+    //return O[i].getoid();
+    return  (i>=0 && i < O.size()) ? O[i].getoid() :-1;
 };
 
 int Problem::getOrderPid(int i) const{
@@ -57,19 +58,22 @@ bool Problem::earlyArrival(int nid,double D) const {
     return N[nid].earlyArrival(D);
 }
 
+bool Problem::isAsignedOrder(int oid) const {
+    return O[oid].isAsigned();
+}
 
 double Problem::nodeServiceTime(int nid) const {
 //    std::cout << "Problem service node"<<nid<<"="<< N[nid].getServiceTime()<<"\n";
     return N[nid].getServiceTime();
 }
 
-Order Problem::getOrder(int i) const {
+Order& Problem::getOrder(int i) {
     return O[i];
     //return  (i>=0 && i <= O.size()) ? O[i]: O[0] ;
 }
 
 double Problem::DepotToDelivery(int n1) const {
-    return  (n1>=0 && n1 <= N.size()) ? N[N[n1].did].distance(depot):-1;
+    return  (n1>=0 && n1 <= N.size()) ? N[N[n1].getdid()].distance(depot):-1;
     //return N[N[n1].did].distance(depot);
 }
 
@@ -157,32 +161,24 @@ void Problem::loadProblem(char *infile)
 
     // read the nodes
     while ( getline(in, line) ) {
-        Node node(line);
-       /*std::istringstream buffer( line );
-        buffer >> node.nid;
-        buffer >> node.x;
-        buffer >> node.y;
-        buffer >> node.demand;
-        buffer >> node.tw_open;
-        buffer >> node.tw_close;
-        buffer >> node.service;
-        buffer >> node.pid;
-        buffer >> node.did;
-*/
-        // compute the extents as we load the data for plotting
-        if (node.x < extents[0]) extents[0] = node.x;
-        if (node.y < extents[1]) extents[1] = node.y;
-        if (node.x > extents[2]) extents[2] = node.x;
-        if (node.y > extents[3]) extents[3] = node.y;
+        Node node(line);  //create node from line on file
+
+        // compute the extents as we load the data for plotting 
+        if (node.getx() < extents[0]) extents[0] = node.getx();
+        if (node.gety() < extents[1]) extents[1] = node.gety();
+        if (node.getx() > extents[2]) extents[2] = node.getx();
+        if (node.gety() > extents[3]) extents[3] = node.gety();
 
         N.push_back(node);
-
         //if (node.nid == 0)
         if (node.isDepot()) {
-            DepotClose = node.tw_close;
-            depot = node;
+            DepotClose = node.closes();
+            depot=node;
         }
     }
+std::cout<<"\ndepot-";
+depot.dump();
+
     in.close();
 
     // add a small buffer around the extents
@@ -195,33 +191,30 @@ void Problem::loadProblem(char *infile)
     makeOrders();
 
     // sort the orders
-    sort(O.begin(), O.end(), sortByDist);
-
     calcAvgTWLen();
 }
 
+void Problem::sortOrdersbyDist(){
+    sort(O.begin(), O.end(), sortByDist);
+};
 
 void Problem::makeOrders ()
 {
+
     if (getNodeCount() == 0 || ((getNodeCount()-1)%2 != 0)) {
         std::string errmsg = "Problem::makeOrders - Nodes have not be correctly loaded.";
         throw std::runtime_error(errmsg);
     }
 
-    O.reserve( (getNodeCount()-1)/2+1 );
-
     int oid = 0;
-
-    // add the depot to the order   --- DEPOT doesnt have an order
-    Order order(oid++);
-    O.push_back(order);
-
+    Order order;
     // for each pickup, get its delivery and create an order
-    for (int i=1; i<getNodeCount(); i++) {
-        if (N[i].pid == 0) {
-            //Order order(oid++,i,N[i].did,N[i].distance(N[0]),N[N[i].did].distance(N[0]));
-            Order order(oid++,i,N[i].did,DepotToPickup(i),DepotToDelivery(i));
-            O.push_back(order);
+    for (int i=0; i<getNodeCount(); i++) {
+        if (N[i].isDepot()) continue;  //no order for depot}
+        if (N[i].ispickup()) {
+              order.fillOrder(N[i],N[N[i].getdid()],oid++,depot);
+              O.push_back(order);
+
         }
     }
 }
@@ -232,7 +225,6 @@ void Problem::calcAvgTWLen() {
     atwl = 0;
     for (int i=0; i<N.size(); i++)
         atwl += N[i].windowLength();
-        //atwl += (N[i].tw_close - N[i].tw_open);
     atwl /= N.size();
 };
 

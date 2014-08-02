@@ -150,10 +150,58 @@ void Route::update() {
 
 
 
+/*
 double Route::testPath(const std::vector<int>& tp) {
     tD = 0;
     tTWV = 0;
     tCV = 0;
+    int q = 0; // current used capcity
+
+    for (int i=0; i<tp.size(); i++) {
+        // add the distance from the previous stop
+        if (i == 0) {
+            tD += P.distance(0, tp[i]);
+        }
+        else {
+            tD += P.distance(tp[i-1], tp[i]);
+
+            // if the current distance is > previous node close time
+            if (tD > P.N[tp[i]].tw_close)
+                tTWV++;
+        }
+
+        // if we arrive before the tw open time, we have to wait till then
+        if (tD < P.N[tp[i]].tw_open)
+            tD = P.N[tp[i]].tw_open;
+
+        // add the demand for this node and check for violation
+        q += P.N[tp[i]].demand;
+        if (q < 0 || q > P.Q)
+            tCV++;
+
+        // update the capacity and pdist lists
+        // capacity[i] = q; // capacity after node is loaded
+        // pdist[i] = D; // distance at node max(arrival time, tw_open)
+
+        // add the service time for this node
+        tD += P.N[tp[i]].service;
+    }
+
+    // add the distance between last delivery node and depot
+    if (tp.size())
+        tD += P.distance(tp[tp.size()-1], 0);
+    if (tD > P.DepotClose)
+        tTWV++;
+
+    return w1*tD + w2*tTWV + w3*tCV;
+};
+*/
+
+double Route::testPath(const std::vector<int>& tp) {
+    // these are used by testPath()
+    int tD=0;      // duration
+    int tTWV=0;    // TW violations
+    int tCV=0;     // capacity violations
     int q = 0; // current used capcity
 
     for (int i=0; i<tp.size(); i++) {

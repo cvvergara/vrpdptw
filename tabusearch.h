@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "Solution.h"
-#include "Move.h"
-#include "Tabu.h"
+#include "solution.h"
+#include "move.h"
+#include "tabu.h"
 
 class TabuSearch {
   public:

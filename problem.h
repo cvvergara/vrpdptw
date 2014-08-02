@@ -8,8 +8,8 @@
 #include <vector>
 #include <math.h>
 
-#include "Node.h"
-#include "Order.h"
+#include "node.h"
+#include "order.h"
 class Solution;
 
 const double w1 = 1.0;  // route duration weighting
@@ -28,7 +28,7 @@ class Problem {
 
 
     // variables for plotting
-    double extents[4];
+    double extents[4]; 
 
     // Problem() {};
     // ~Problem() {};
@@ -50,10 +50,12 @@ class Problem {
     double nodeServiceTime(int i) const;
     bool earlyArrival(int nid,double D) const; 
     bool lateArrival(int nid,double D) const; 
+    bool isAsignedOrder(int oid) const;
     Node& getDeliveryNodeFromOrder(int i);
     Node& getPickupNodeFromOrder(int i);
+    void sortOrdersbyDist();
 
-    Order getOrder(int i) const;
+    Order& getOrder(int i) ;
 
     void makeOrders();
 

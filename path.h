@@ -1,50 +1,51 @@
-#ifndef ROUTE_H
-#define ROUTE_H
+#ifndef PATH_H
+#define PATH_H
 
-#include <stdexcept>
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <math.h>
+//#include <stdexcept>
+//#include <algorithm>
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
+//#include <string>
+//#include <vector>
+#include <deque>
+//#include <math.h>
 
-class Solution;     // forward reference
-
-#include "Order.h"
+#include "order.h"
+#include "node.h"
 #include "pathnode.h"
-#include "path.h"
-#include "Problem.h"
+//#include "Problem.h"
 
-class Route {
+
+class Path{
   public:
     int rid;
 
-    Problem& P;
-
-    Path routePath;
-
-    std::vector<int> path;      // node ids along the path
-    std::vector<int> orders;    // order ids associated with the nodes
-//    std::vector<int> capacity;  // capacity after node is loaded
-//    std::vector<double> pdist;  // distance at node max(arrival time, tw_open)
-    bool updated;
-    int D;      // duration
-    //double D;      // duration
+    std::deque<pathNode> path;      // node ids along the path and more
+    const Node &depot;
+//    const pathNode depot;
+    bool twv_depot;
+    bool cv_depot;
+    double D;      // duration
     int TWV;    // TW violations
     int CV;     // capacity violations
+
     double cost;
 
-    // these are used by testPath()
-    int tD;      // duration
-    int tTWV;    // TW violations
-    int tCV;     // capacity violations
+//    Path () {};
+    Path (Node &d): depot(d){};
+    //Path (Node d) {depot.node=d;};
+    ~Path() {};
 
-    Route(Problem& p);
+    void push_back(pathNode pathstop);
+    void emplace(pathNode pathstop,int at);
+    void setvalues(int at);
+    void dump();
 
-    // ~Route() {};
 
+
+};
+/*
     Route &operator = (const Route &r) { P = r.P; return *this; };
 
     void update();
@@ -73,5 +74,5 @@ class Route {
 
     void dump();
 };
-
+*/
 #endif

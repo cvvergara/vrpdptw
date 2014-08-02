@@ -1,5 +1,5 @@
 #include <sstream>
-#include "Node.h"
+#include "node.h"
 
 Node::Node(std::string line) {
         std::istringstream buffer( line );
@@ -12,6 +12,7 @@ Node::Node(std::string line) {
         buffer >> service;
         buffer >> pid;
         buffer >> did;
+        oid =-1;
 }
 
 bool Node::checkIntegrity(int nodesCant) {
@@ -26,7 +27,7 @@ bool Node::checkIntegrity(int nodesCant) {
 }
 
 
-void Node::dump() {
+void Node::dump()const {
     std::cout << nid << ", "
               << x << ", "
               << y << ", "
@@ -35,5 +36,7 @@ void Node::dump() {
               << tw_close << ", "
               << service << ", "
               << pid << ", "
-              << did << std::endl;
+              << did << ","
+              << getoid() << std::endl;
 }
+

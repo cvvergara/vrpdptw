@@ -16,15 +16,26 @@ vrpdptw: $(OBJS)
 %.o: %.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
-test: vrpdptw lc101.txt
-	./vrpdptw lc101.txt
+test: vrpdptw lc008.txt lc032.txt lc101.txt
+	./vrpdptw lc008.txt > lc008.result
+	./vrpdptw lc032.txt > lc032.result
+	./vrpdptw lc101.txt > lc101.result
 
-valgrind: vrpdptw lc101.txt
+small: vrpdptw lc008.txt
+	./vrpdptw lc008.txt > lc008.result
+
+med: vrpdptw lc032.txt
+	./vrpdptw lc032.txt > lc032.result
+
+big: vrpdptw lc101.txt
+	./vrpdptw lc101.txt > lc0101.result
+
+valgrind: vrpdptw lc008.txt 
 	valgrind -v --track-origins=yes --leak-check=full ./vrpdptw lc101.txt
 
 .PHONY: clean
 
 clean:
-	rm -f vrpdptw $(OBJS) $(DEPS) out/*.png
+	rm -f vrpdptw $(OBJS) $(DEPS) *.png out/*.png *.result
 
 -include $(DEPS)

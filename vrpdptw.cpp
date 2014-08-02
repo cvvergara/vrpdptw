@@ -8,13 +8,13 @@
 #include <vector>
 #include <math.h>
 
-#include "Node.h"
-#include "Order.h"
-#include "Problem.h"
-#include "Route.h"
-#include "Solution.h"
-#include "Plot.h"
-#include "TabuSearch.h"
+#include "node.h"
+#include "order.h"
+#include "problem.h"
+#include "route.h"
+#include "solution.h"
+#include "plot.h"
+#include "tabusearch.h"
 
 
 // create a static global variable for the problem
@@ -36,20 +36,52 @@ int main (int argc, char **argv)
     }
 
     char * infile = argv[1];
-
+    
     try {
         P.loadProblem(infile);
         std::cout << "Problem '" << infile << "'loaded\n";
         P.dump();
-
         Solution S(P);
+
+        std::cout << "\n\n\n******************************Solution: dumb solution \n";
+        S.dumbConstruction();
+        Plot plot(S);
+        std::string title = (std::string)infile+"-DumbSolution.png";
+        plot.out(title, true, 800, 800, (char*)title.c_str());
+
+S.R.clear();
+        std::cout << "\n\n\n******************************Solution: sorted orders by distance solution \n";
+        S.withSortedOrdersConstruction();
+        Plot plot1(S);
+        title = (std::string)infile+"-SortedSolution.png";
+        plot1.out(title, true, 800, 800, (char*)title.c_str());
+
+S.R.clear();
+
+
+        std::cout << "\n\n\n******************************Solution: dumb + sorted  \n";
+        S.dumbConstruction();  //dumb
+        S.withSortedOrdersConstruction(); //sort
+        Plot plot2(S);
+        title = (std::string)infile+"-Dumb+SortedSolution.png";
+        plot2.out(title, true, 800, 800, (char*)title.c_str());
+
+
+
+
+
+//        S.dump();
+          
+/*
         S.sequentialConstruction();
+
         //S.initialConstruction();
         S.computeCosts();
         std::cout << "Initial Solution: SCost: " << S.getCost() << std::endl;
         S.dump();
+        P.dump();
 
-#if 1
+//#id 1
         TabuSearch TS(S);
         TS.debugTabu = true;
         TS.debugPlots = false;
@@ -58,14 +90,14 @@ int main (int argc, char **argv)
         std::cout << "TabuSearch Results (1)" << std::endl;
         B.dump();
 
-#if 0
+//#if 0
         TabuSearch TS2(B);
         Solution C = TS2.solve();
 
         std::cout << "TabuSearch Results (2)" << std::endl;
         C.dump();
-#endif
-#else
+//#endif
+//#else
         Solution B = S;
         for (int i=0; i<2; i++){
             TabuSearch TS(B);
@@ -74,11 +106,12 @@ int main (int argc, char **argv)
             std::cout << "TabuSearch Results (" << i+1 << ")" << std::endl;;
             B.dump();
         }
-#endif
+//#endif
 
         Plot plot(B);
         std::string title = "vrpdptw.png Final";
         plot.out("vrpdptw.png", true, 800, 800, (char*)title.c_str());
+*/
     }
     catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
