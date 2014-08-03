@@ -7,7 +7,7 @@
 //#include <fstream>
 //#include <sstream>
 //#include <string>
-//#include <vector>
+#include <vector>
 #include <deque>
 //#include <math.h>
 
@@ -21,7 +21,7 @@ class Path{
   public:
     int rid;
 
-    std::deque<pathNode> path;      // node ids along the path and more
+    std::vector<pathNode> path;      // node ids along the path and more
     const Node &depot;
 //    const pathNode depot;
     bool twv_depot;

@@ -120,6 +120,17 @@ bool Problem::checkIntegrity() const {
    return flag;
 }
 
+void Problem::ordersdump() {
+    std::cout << "---- Orders --------------\n";
+    for (int i=0; i<O.size(); i++)
+        O[i].dump();
+}
+
+void Problem::nodesdump() {
+    std::cout << "---- Nodes  --------------\n";
+    for (int i=0; i<N.size(); i++)
+        N[i].dump();
+}
 void Problem::dump() {
     std::cout << "---- Problem -------------\n";
     std::cout << "K: " << K << std::endl;
@@ -131,12 +142,16 @@ void Problem::dump() {
                              << extents[1] << ", "
                              << extents[2] << ", "
                              << extents[3] << std::endl;
+    ordersdump();
+    nodesdump();
+/*
     std::cout << "---- Orders --------------\n";
     for (int i=0; i<O.size(); i++)
         O[i].dump();
     std::cout << "---- Nodes  --------------\n";
     for (int i=0; i<N.size(); i++)
         N[i].dump();
+*/
     std::cout << std::endl;
 }
 

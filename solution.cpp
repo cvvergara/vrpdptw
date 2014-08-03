@@ -24,11 +24,22 @@ void Solution::withSortedOrdersConstruction() {
     dumbConstruction();
 };
 
+void Solution::deliveryBeforePickupConstruction() {
+    Route dumbroute(P);
+        for (int i=0; i<P.getOrderCount(); i++) {
+           dumbroute.addDelivery(P.getOrder(i));
+           dumbroute.addPickup(P.getOrder(i));
+        }
+    dumbroute.dump();
+    R.push_back(dumbroute);
+};
+
 
 void Solution::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
     int M = 0;
     R.clear();
+    P.sortOrdersbyDist();
     //int numUnassigned = P.O.size() - 1;
     int numUnassigned = P.getOrderCount(); //-1 because of Oredr[0] from DEPOT
     while (numUnassigned > 0) {
@@ -64,6 +75,14 @@ void Solution::sequentialConstruction() {
     //std::cout << "Exit Problem::sequentialConstruction\n";
 }
 
+void Solution::initialNoHillConstruction() {
+        for (int i=0; i<P.getOrderCount(); i++) {
+           Route dumbroute(P);
+           dumbroute.addOrder(P.getOrder(i));
+           R.push_back(dumbroute);
+        }
+    dumproutes();
+};
 
 void Solution::initialConstruction() {
     int M = 0;
@@ -107,13 +126,20 @@ double Solution::getDistance() {
 }
 
 
+void Solution::dumproutes() {
+    std::cout<< "\nRoutes:" << std::endl;
+    for (int i=0; i<R.size(); i++) {
+        std::cout<<"\n -----> Route#"<<i<<"\n";
+        R[i].dump();
+    }
+}
+
 void Solution::dump() {
     computeCosts();
     std::cout << "Solution: totalDistance: " << totalDistance
               << ", totalCost: " << totalCost
-              << std::endl << "Routes:" << std::endl;
-    for (int i=0; i<R.size(); i++)
-        R[i].dump();
+              << std::endl;
+    dumproutes();
     std::cout << "mapOtoR: ";
     for (int i=0; i<mapOtoR.size(); i++) {
         if (i) std::cout << ", ";

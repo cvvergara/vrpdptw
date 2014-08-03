@@ -35,6 +35,6 @@
         cargo+=prev.cargo+node.getDemand();
         cv= cargo>cargoLimit or cargo < 0;
         twvTot = (twv)? prev.twvTot+prev.twvTot:prev.twvTot;
-        cvTot = (cv)? prev.cvTot+prev.cvTot:prev.cvTot;
+        cvTot = (cv)? prev.cvTot+1:prev.cvTot;
 }
 

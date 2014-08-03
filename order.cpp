@@ -12,13 +12,14 @@ int Order::getdid() const {return did;}
 double Order::getDistFromPickup(){return dist;}
 double Order::getDistFromDelivery(){return dist2;}
 void  Order::moveOrder(int toRoute) {routeId=toRoute;}
-bool Order::checkIntegrity(int nodesCant) {
+
+bool Order::checkIntegrity(int ordersCant) {
      bool flag=true;
-     if (pid<0 or pid>nodesCant) {
-        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<pid<<"expected in [0,"<<nodesCant<<"] \n";
+     if (pid<0 or pid>ordersCant) {
+        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<pid<<"expected in [0,"<<ordersCant<<"] \n";
         flag=false;}
-     if (did<0 or did>nodesCant) {
-        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<did<<"expected in [0,"<<nodesCant<<"] \n";
+     if (did<0 or did>ordersCant) {
+        std::cout << "Order["<<oid<<"]: pickup id out of range:"<<did<<"expected in [0,"<<ordersCant<<"] \n";
         flag=false;}
      return flag;
 }
@@ -30,8 +31,8 @@ void Order::dump() {
               << did << ", "
               << dist <<  ", "
               << dist2 << std::endl;
-    std::cout <<  "pickupPtr \n";
+    std::cout <<  "Pickup \n";
     pickup->dump();
-    std::cout <<  "deliveryPtr \n";
+    std::cout <<  "Delivery \n";
     delivery->dump();
 }

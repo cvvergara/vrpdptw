@@ -16,7 +16,6 @@
 
 
 void Path::dump() {
-    std::cout<<"Dumping path:\n";
     std::cout<<"depot:\n";
     depot.dump();
     if(twv_depot) std::cout<<"depot: has twv\n";
@@ -38,6 +37,7 @@ void Path::dump() {
 /*         pathNode &prev= (at==0)? depot: path[at];        
          pathstop.setValues(prev);
          path.insert(path.begin()+at,pathstop);
+         setvalues(at);
 */    }
 
     void Path::setvalues(int at){

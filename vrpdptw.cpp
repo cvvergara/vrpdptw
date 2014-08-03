@@ -38,15 +38,30 @@ int main (int argc, char **argv)
     char * infile = argv[1];
     
     try {
+        std::string title;
         P.loadProblem(infile);
         std::cout << "Problem '" << infile << "'loaded\n";
         P.dump();
         Solution S(P);
 
+        std::cout << "\n\n\n******************************Solution: initial no hill Construction \n";
+        S.initialNoHillConstruction();
+        Plot plot4(S);
+        title = (std::string)infile+"-initialNoHillSolution.png";
+        plot4.out(title, true, 800, 800, (char*)title.c_str());
+S.R.clear();
+        std::cout << "\n\n\n******************************Solution: delivery befor pickup, The NO NO solution\n";
+        S.deliveryBeforePickupConstruction();
+        Plot plot3(S);
+        title = (std::string)infile+"-NoNoSolution.png";
+        plot3.out(title, true, 800, 800, (char*)title.c_str());
+/*  passed tests
+
+S.R.clear();
         std::cout << "\n\n\n******************************Solution: dumb solution \n";
         S.dumbConstruction();
         Plot plot(S);
-        std::string title = (std::string)infile+"-DumbSolution.png";
+        title = (std::string)infile+"-DumbSolution.png";
         plot.out(title, true, 800, 800, (char*)title.c_str());
 
 S.R.clear();
@@ -65,8 +80,7 @@ S.R.clear();
         Plot plot2(S);
         title = (std::string)infile+"-Dumb+SortedSolution.png";
         plot2.out(title, true, 800, 800, (char*)title.c_str());
-
-
+*/
 
 
 

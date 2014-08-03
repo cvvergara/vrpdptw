@@ -28,10 +28,13 @@ class Solution {
     };
 
     void dump();
+    void dumproutes();
 
     void dumbConstruction();
     void withSortedOrdersConstruction();
+    void deliveryBeforePickupConstruction();
     void sequentialConstruction();
+    void initialNoHillConstruction();
 
     void initialConstruction();
 

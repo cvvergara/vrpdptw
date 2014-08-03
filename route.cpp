@@ -9,7 +9,7 @@ inline void swap(int a, int b) {
     b = tmp;
 }
 
-Route::Route(Problem& p) : P(p) , routePath(p.depot) {
+Route::Route(Problem& p) : P(p) , routePath(p.getdepot()) {
     updated = true;
     D = 0;
     TWV = 0;
@@ -74,7 +74,7 @@ void Route::update() {
     // add the distance between last delivery node and depot
     if (path.size()) D += distanceToNext(path.size()-1);
     //if (D > P.DepotClose) {
-    if (P.depot.lateArrival(D))  TWV++;
+    if (P.getdepot().lateArrival(D))  TWV++;
     cost = w1*D + w2*TWV + w3*CV;
     updated = false;
 };
@@ -139,25 +139,6 @@ double Route::getCost() {
     return cost;
 }
 
-
-void Route::addOrder( Order &o) {
-//Nodopid de la orden
-
-//    pathNode pickup(P.N[o.pid]);
-    pathNode pickup(*o.pickup);
-    pathNode delivery(*o.delivery);
-    routePath.push_back(pickup);
-    routePath.push_back(delivery);
-    o.asigned=true;
-//    routePath.dump();
-//std::cout<<"\nooooooooooooooooooooooooooooooooooooooooooo\n";
-
-    path.push_back(o.pid);
-    path.push_back(o.did);
-    orders.push_back(o.oid);
-    orders.push_back(o.oid);
-    updated = true;
-}
 
 
 bool Route::insertOrder(int oid, bool mustBeValid) {
@@ -241,8 +222,26 @@ bool Route::insertOrder(int oid, bool mustBeValid) {
     return false;
 }
 
+void Route::addOrder( Order &o) {
+//Nodopid de la orden
+
+//    pathNode pickup(P.N[o.pid]);
+    pathNode pickup(*o.pickup);
+    pathNode delivery(*o.delivery);
+    routePath.push_back(pickup);
+    routePath.push_back(delivery);
+//    routePath.dump();
+//std::cout<<"\nooooooooooooooooooooooooooooooooooooooooooo\n";
+
+    path.push_back(o.pid);
+    path.push_back(o.did);
+    orders.push_back(o.oid);
+    orders.push_back(o.oid);
+    updated = true;
+}
 
 void Route::removeOrder(const Order &o) {
+
     std::vector<int>::iterator it;
     it = std::find(path.begin(), path.end(), o.pid);
     if (it != path.end()) path.erase(it);
@@ -262,6 +261,9 @@ void Route::removeOrder(const int oid) {
 }
 
 int Route::addPickup(const Order &o) {
+    pathNode pickup(*o.pickup);
+    routePath.push_back(pickup);
+
     path.push_back(o.pid);
     orders.push_back(o.oid);
     hillClimbOpt();
@@ -271,6 +273,9 @@ int Route::addPickup(const Order &o) {
 
 
 void Route::addDelivery(const Order &o) {
+    pathNode delivery(*o.delivery);
+    routePath.push_back(delivery);
+
     path.push_back(o.did);
     orders.push_back(o.oid);
     hillClimbOpt();

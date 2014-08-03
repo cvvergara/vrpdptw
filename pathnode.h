@@ -36,7 +36,7 @@ static const double cargoLimit=100; //need to set this data
                  <<",cargo="<<cargo
                  <<",distPrev="<<distPrev
                  <<",totDistFromDepot="<<totDistFromDepot
-                 <<"";
+                 <<"\n";
     }
 /***********************/     
     void copyvalues (const pathNode &other) {

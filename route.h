@@ -29,6 +29,7 @@ class Route {
     std::vector<int> orders;    // order ids associated with the nodes
 //    std::vector<int> capacity;  // capacity after node is loaded
 //    std::vector<double> pdist;  // distance at node max(arrival time, tw_open)
+
     bool updated;
     //int D;      // duration
     double D;      // duration

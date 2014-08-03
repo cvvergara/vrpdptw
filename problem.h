@@ -17,11 +17,13 @@ const double w2 = 1000.0;  // total number of time violations weight
 const double w3 = 1.0;  // total number of capacity violations weight
 
 class Problem {
+  private:
+    Node depot;
   public:
     int K;      // number of vehicles
     int Q;      // capacity
     int DepotClose;
-    Node depot;
+    //Node depot;
     double atwl;
     std::vector<Node> N;    // vector of nodes
     std::vector<Order> O;   // vector of orders
@@ -33,6 +35,7 @@ class Problem {
     // Problem() {};
     // ~Problem() {};
 
+    Node &getdepot(){ return depot;};
     void loadProblem(char *infile);
 
     unsigned int getNodeCount();
@@ -59,6 +62,8 @@ class Problem {
 
     void makeOrders();
 
+    void nodesdump();
+    void ordersdump();
     void dump();
 
     void calcAvgTWLen();
