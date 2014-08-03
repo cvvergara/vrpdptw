@@ -142,6 +142,7 @@ double Route::getCost() {
 
 
 bool Route::insertOrder(int oid, bool mustBeValid) {
+/*
     // check if the order is already in the route
     std::vector<int>::iterator it;
     it = std::find(orders.begin(), orders.end(), oid);
@@ -220,7 +221,7 @@ bool Route::insertOrder(int oid, bool mustBeValid) {
         return true;
     }
     return false;
-}
+*/}
 
 void Route::addOrder( Order &o) {
 //Nodopid de la orden
@@ -232,16 +233,17 @@ void Route::addOrder( Order &o) {
     routePath.push_back(delivery);
 //    routePath.dump();
 //std::cout<<"\nooooooooooooooooooooooooooooooooooooooooooo\n";
-
+/*
     path.push_back(o.pid);
     path.push_back(o.did);
     orders.push_back(o.oid);
     orders.push_back(o.oid);
     updated = true;
+*/
 }
 
 void Route::removeOrder(const Order &o) {
-
+/*
     std::vector<int>::iterator it;
     it = std::find(path.begin(), path.end(), o.pid);
     if (it != path.end()) path.erase(it);
@@ -252,6 +254,7 @@ void Route::removeOrder(const Order &o) {
     it = std::find(orders.begin(), orders.end(), o.oid);
     if (it != orders.end()) orders.erase(it);
     updated = true;
+*/
 }
 
 
@@ -263,23 +266,25 @@ void Route::removeOrder(const int oid) {
 int Route::addPickup(const Order &o) {
     pathNode pickup(*o.pickup);
     routePath.push_back(pickup);
-
+/*
     path.push_back(o.pid);
     orders.push_back(o.oid);
     hillClimbOpt();
     update();
     return (TWV || CV)? 0 : 1;
+*/
 }
 
 
 void Route::addDelivery(const Order &o) {
     pathNode delivery(*o.delivery);
     routePath.push_back(delivery);
-
+/*
     path.push_back(o.did);
     orders.push_back(o.oid);
     hillClimbOpt();
     update();
+*/
 }
 
 

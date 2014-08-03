@@ -31,6 +31,7 @@ void Path::dump() {
          if (path.size()==0) pathstop.setValues(depot);
          else pathstop.setValues(path.back());
          path.push_back(pathstop);
+         setDepotValues();
 }
 
     void Path::emplace(pathNode pathstop,int at) {
@@ -46,12 +47,18 @@ void Path::dump() {
               else path[at].setValues(path[at-1]);
               setvalues(at+1);
          } else {
-              D = path[at-1].totDistFromDepot+depot.distance(path[at-1].node);
-              twv_depot=depot.lateArrival(D);
-              cv_depot=path[at-1].cv;
-              TWV = path[at-1].twvTot;
-              CV = path[at-1].cvTot;
-              TWV = (twv_depot)? TWV+1:TWV;
-              CV = (cv_depot)? CV+1:CV;
+              setDepotValues();
          };
      }
+
+     void Path::setDepotValues() {
+              int at= path.size()-1;
+              D = path[at].totDistFromDepot+depot.distance(path[at].node);
+              twv_depot=depot.lateArrival(D);
+              cv_depot=path[at].cv;
+              TWV = path[at].twvTot;
+              CV = path[at].cvTot;
+              TWV = (twv_depot)? TWV+1:TWV;
+              CV = (cv_depot)? CV+1:CV;
+      }
+

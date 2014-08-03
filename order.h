@@ -5,10 +5,12 @@
 #include "node.h"
 
 class Order {
+private:
+   
   public:
     int oid;        // order id
-    int pid;        // pickup node id
-    int did;        // delivery node id
+//    int pid;        // pickup node id
+//    int did;        // delivery node id
     int routeId;      // routID
     double dist;    // distance from depot to pickup location
     double dist2;   // distance from delivery to depot
@@ -18,10 +20,10 @@ class Order {
 
 
 
-int setOrder(int i_oid, int i_pid, int i_did, double i_dist, double i_dist2, bool i_asigned){
+int setOrder(int i_oid, /*int i_pid, int i_did,*/ double i_dist, double i_dist2, bool i_asigned){
     oid=i_oid;
-    pid=i_pid;
-    did=i_did;
+//    pid=i_pid;
+//    did=i_did;
     dist=i_dist;
     dist2=i_dist2;
     asigned=i_asigned;
@@ -29,22 +31,13 @@ int setOrder(int i_oid, int i_pid, int i_did, double i_dist, double i_dist2, boo
 };
 
 Order(Node &p, Node &d , int i_oid, const Node depot){ 
-      oid=i_oid;
-      pid=p.getnid();
-      did=d.getnid();
-      pickup=&p;
-      delivery=&d;
-      pickup->setoid(i_oid);
-      delivery->setoid(i_oid);
-      dist=pickup->distance(depot);
-      dist2=delivery->distance(depot);
-      asigned=false;
+      fillOrder(p,d,i_oid,depot);
 }
 
 void fillOrder(Node &p, Node &d , int i_oid, const Node depot){ 
       oid=i_oid;
-      pid=p.getnid();
-      did=d.getnid();
+//      pid=p.getnid();
+//      did=d.getnid();
       pickup=&p;
       delivery=&d;
       pickup->setoid(i_oid);
@@ -58,13 +51,13 @@ Order(const Order& other){
             pickup=other.pickup;
             delivery=other.delivery;
 
-         setOrder(other.oid,other.pid,other.did,other.dist,other.dist2,other.asigned);
+         setOrder(other.oid,/*other.pid,other.did,*/other.dist,other.dist2,other.asigned);
 };
 
 Order(){
          pickup=NULL;
          delivery=NULL;
-         setOrder(-1,-1,-1,0,0,false);
+         setOrder(-1,/*-1,-1,*/0,0,false);
 }
     // ~Order() {};
 /*
@@ -85,9 +78,9 @@ bool isAsigned()   const { return asigned;};
 
 
     int getoid() const;
-    int getpid() const;
+//    int getpid() const;
     int getRoute();
-    int getdid() const;
+//    int getdid() const;
     bool checkIntegrity(int nodesCant);
     double getDistFromPickup();
     double getDistFromDelivery();

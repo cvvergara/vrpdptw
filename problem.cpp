@@ -29,21 +29,25 @@ int Problem::getOrderOid(int i) const{
 };
 
 int Problem::getOrderPid(int i) const{
-    return O[i].pid;
+    //return O[i].pid;
+    return O[i].delivery->getpid();
     //return  (i>=0 && i < O.size()) ? O[i].oid :1;
 };
 
 int Problem::getOrderDid(int i) const{
-    return O[i].did;
+    //return O[i].did;;
+    return O[i].delivery->getpid();
     //return  (i>=0 && i < O.size()) ? O[i].oid :1;
 };
 
 Node& Problem::getDeliveryNodeFromOrder(int i){
-    return N[getOrderDid(i)];
+    //return N[getOrderDid(i)];
+    return *O[i].delivery;
 }
 
 Node& Problem::getPickupNodeFromOrder(int i){
-    return N[getOrderPid(i)];
+    //return N[getOrderPid(i)];
+    return *O[i].pickup;
 }
 
 double Problem::nodeDemand(int i) const {

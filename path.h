@@ -21,7 +21,7 @@ class Path{
   public:
     int rid;
 
-    std::vector<pathNode> path;      // node ids along the path and more
+    std::deque<pathNode> path;      // node ids along the path and more
     const Node &depot;
 //    const pathNode depot;
     bool twv_depot;
@@ -40,6 +40,7 @@ class Path{
     void push_back(pathNode pathstop);
     void emplace(pathNode pathstop,int at);
     void setvalues(int at);
+    void setDepotValues();
     void dump();
 
 
