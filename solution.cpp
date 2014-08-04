@@ -12,6 +12,7 @@ bool sortByOid(Order a, Order b)
 
 void Solution::dumbConstruction() {
     Route dumbroute(P);
+    P.sortOrdersbyDistReverse();
         for (int i=0; i<P.getOrderCount(); i++) {
            dumbroute.addOrder(P.getOrder(i));
         }
@@ -22,6 +23,17 @@ void Solution::dumbConstruction() {
 void Solution::withSortedOrdersConstruction() {
     P.sortOrdersbyDist();
     dumbConstruction();
+};
+
+void Solution::dumbAndHillConstruction() {
+    Route dumbroute(P);
+    P.sortOrdersbyDistReverse();
+        for (int i=0; i<P.getOrderCount(); i++) {
+           dumbroute.addOrder(P.getOrder(i));
+        }
+    dumbroute.hillClimbOpt();
+    dumbroute.dump();
+    R.push_back(dumbroute);
 };
 
 void Solution::deliveryBeforePickupConstruction() {
@@ -50,19 +62,19 @@ void Solution::sequentialConstruction() {
             if (P.isAsignedOrder(i)) continue; 
 
             r.addOrder(P.getOrder(i));
-            mapOtoR[P.getOrderOid(i)] = r.rid;
+            //mapOtoR[P.getOrderOid(i)] = r.rid;
             r.hillClimbOpt();
 
             // if route is not feasible
             if (r.orders.size() > 1 && (r.TWV > 0 || r.CV > 0)) {
                 r.removeOrder(P.O[i]);
 //                mapOtoR[P.O[i].oid] = -1;
-                mapOtoR[P.getOrderOid(i)] = -1;
+//                mapOtoR[P.getOrderOid(i)] = -1;
             }
             // else if it is feasible
             else {
 //                mapOtoR[P.O[i].oid] = r.rid;
-                mapOtoR[P.getOrderOid(i)] = r.rid;
+//                mapOtoR[P.getOrderOid(i)] = r.rid;
                 numUnassigned--;
             }
         }
@@ -97,9 +109,9 @@ void Solution::initialConstruction() {
 //        r.addOrder(P.O[i]);
 //        mapOtoR[P.O[i].oid] = r.rid;
         r.addOrder(P.getOrder(i));
-        mapOtoR[P.getOrderOid(i)] = r.rid;
+        //mapOtoR[P.getOrderOid(i)] = r.rid;
         r.addOrder(P.getOrder(i));
-        mapOtoR[P.getOrderOid(i)] = r.rid;
+        //mapOtoR[P.getOrderOid(i)] = r.rid;
         R.push_back(r);
     }
 
@@ -140,12 +152,12 @@ void Solution::dump() {
               << ", totalCost: " << totalCost
               << std::endl;
     dumproutes();
-    std::cout << "mapOtoR: ";
-    for (int i=0; i<mapOtoR.size(); i++) {
-        if (i) std::cout << ", ";
-        std::cout << mapOtoR[i];
-    }
-    std::cout << std::endl;
+//    std::cout << "mapOtoR: ";
+//    for (int i=0; i<mapOtoR.size(); i++) {
+//        if (i) std::cout << ", ";
+//        std::cout << mapOtoR[i];
+//    }
+//    std::cout << std::endl;
 }
 
 

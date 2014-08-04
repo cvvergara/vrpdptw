@@ -57,6 +57,7 @@ class Problem {
     Node& getDeliveryNodeFromOrder(int i);
     Node& getPickupNodeFromOrder(int i);
     void sortOrdersbyDist();
+    void sortOrdersbyDistReverse();
 
     Order& getOrder(int i) ;
 

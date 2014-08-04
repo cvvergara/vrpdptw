@@ -13,17 +13,17 @@ class Solution {
   public:
     Problem& P;
     std::vector<Route> R;
-    std::vector<int> mapOtoR;
+    //std::vector<path> R;
+    //std::vector<int> mapOtoR;
     double totalDistance;
     double totalCost;
 
     Solution(Problem& p): P(p) {
         totalDistance = 0;
         totalCost = 0;
-        mapOtoR.clear();
-        mapOtoR.resize(P.O.size());
-        for (int i=0; i<P.O.size(); i++)
-            mapOtoR[i] = -1;
+//        mapOtoR.clear();
+//        mapOtoR.resize(P.O.size());
+//        for (int i=0; i<P.O.size(); i++) mapOtoR[i] = -1;
         R.clear();
     };
 
@@ -32,6 +32,7 @@ class Solution {
 
     void dumbConstruction();
     void withSortedOrdersConstruction();
+    void dumbAndHillConstruction();
     void deliveryBeforePickupConstruction();
     void sequentialConstruction();
     void initialNoHillConstruction();
@@ -52,7 +53,7 @@ class Solution {
             totalCost = rhs.totalCost;
             P = rhs.P;
             R = rhs.R;
-            mapOtoR = rhs.mapOtoR;
+            //mapOtoR = rhs.mapOtoR;
         }
         return *this;
     };

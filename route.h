@@ -71,7 +71,10 @@ class Route {
     void addDelivery(const Order &o);
 
     void hillClimbOpt();
-
+    int getnid(int i);
+    int getoid(int i);
+//    void smalldump();
+    void dumppath();
     void dump();
 };
 

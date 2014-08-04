@@ -132,11 +132,7 @@ double Route::testPath(const std::vector<int>& tp) {
 
 
 double Route::getCost() {
-    if (updated) {
-        update();
-        cost = w1*D + w2*TWV + w3*CV;
-    }
-    return cost;
+    return    cost = w1*D + w2*TWV + w3*CV;
 }
 
 
@@ -289,7 +285,8 @@ void Route::addDelivery(const Order &o) {
 
 
 void Route::hillClimbOpt() {
-//std::cout << "Enter Route::hillClimbOpt: rid: " << rid << std::endl;
+     routePath.hillClimbOpt();
+/*//std::cout << "Enter Route::hillClimbOpt: rid: " << rid << std::endl;
     double oldcost = getCost();
     while (true) {
         bool improved = false;
@@ -318,26 +315,25 @@ void Route::hillClimbOpt() {
         if (!improved) break;
     }
     //std::cout << "Exit Route::hillClimbOpt\n";
+*/
 }
 
-
 void Route::dump() {
-    update();
-    std::cout << rid << ", "
-              << D << ", "
-              << TWV << ", "
-              << CV << ", "
-              << getCost() << ", [";
-    for (int i=0; i<path.size(); i++) {
-        if (i) std::cout << ", ";
-        std::cout << path[i];
-    }
-    std::cout << "], [";
-    for (int i=0; i<orders.size(); i++) {
-        if (i) std::cout << ", ";
-        std::cout << orders[i];
-    }
-    std::cout << "]" << std::endl;
+    routePath.seteval(w1,w2,w3);
+    routePath.smalldump();
+    std::cout <<  " Route cost: "<< routePath.getcost();
     routePath.dump();
+}
+
+int Route::getnid(int i) {
+    return routePath.getnid(i);
+}
+
+int Route::getoid(int i) {
+    return routePath.getoid(i);
+}
+
+void Route::dumppath() {
+    routePath.smalldump();
 }
 

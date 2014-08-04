@@ -46,7 +46,8 @@ private:
     bool lateArrival(double D) const { return D > tw_close;};
     bool ispickup() const { return did;};
     bool isdelivery() const { return pid;};
-    bool isDepot() const {return nid==0;};
+    bool isdepot() const {return nid==0;};
+    bool sameorder(Node &n) {return orderPtr == n.orderPtr;};
     double distance(const Node &n2) const {
          double dx = n2.x - x;
          double dy = n2.y - y;

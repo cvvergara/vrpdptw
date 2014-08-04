@@ -13,6 +13,11 @@ bool sortByDist(Order a, Order b)
     return a.dist > b.dist;
 }
 
+bool sortByDistReverse(Order a, Order b)
+{
+    return a.dist < b.dist;
+}
+
 // Class functions
 
 unsigned int Problem::getNodeCount() {
@@ -190,7 +195,7 @@ void Problem::loadProblem(char *infile)
 
         N.push_back(node);
         //if (node.nid == 0)
-        if (node.isDepot()) {
+        if (node.isdepot()) {
             DepotClose = node.closes();
             depot=node;
         }
@@ -213,6 +218,10 @@ depot.dump();
     calcAvgTWLen();
 }
 
+void Problem::sortOrdersbyDistReverse(){
+    sort(O.begin(), O.end(), sortByDistReverse);
+};
+
 void Problem::sortOrdersbyDist(){
     sort(O.begin(), O.end(), sortByDist);
 };
@@ -229,7 +238,7 @@ void Problem::makeOrders ()
     Order order;
     // for each pickup, get its delivery and create an order
     for (int i=0; i<getNodeCount(); i++) {
-        if (N[i].isDepot()) continue;  //no order for depot}
+        if (N[i].isdepot()) continue;  //no order for depot}
         if (N[i].ispickup()) {
               order.fillOrder(N[i],N[N[i].getdid()],oid++,depot);
               O.push_back(order);

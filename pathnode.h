@@ -15,9 +15,9 @@
 //#include "Problem.h"
 
 class pathNode {
+private:
+    Node *node;
 public:
-    Node &node;
-//    Order order;
 static const double cargoLimit=100; //need to set this data
     bool twv;
     bool cv;
@@ -27,8 +27,19 @@ static const double cargoLimit=100; //need to set this data
     double distPrev;
     double totDistFromDepot;
 
+    Node& getnode(){return *node;};
+    bool ispickup() const {return node->ispickup();}
+    bool isdepot() const {return node->isdepot();}
+    bool isdelivery() const {return node->isdelivery();}
+    bool sameorder(pathNode &n) const {return node->sameorder(n.getnode());}
+    int getnid() {return node->getnid();}
+    int getoid() {return node->getoid();}
+
+    
+
+
     void dump() {
-        node.dump();
+        node->dump();
         std::cout<<"twv="<<twv
                  <<",cv="<<cv
                  <<",twvTot="<<twvTot
@@ -40,8 +51,7 @@ static const double cargoLimit=100; //need to set this data
     }
 /***********************/     
     void copyvalues (const pathNode &other) {
-//              order=other.order;
-           //   cargoLimit=other.cargoLimit;
+              node=other.node;
               twv=other.twv;
               cv=other.cv;
               twvTot=other.twvTot;
@@ -50,7 +60,9 @@ static const double cargoLimit=100; //need to set this data
               distPrev=other.distPrev;
               totDistFromDepot=other.totDistFromDepot;
              };
-   pathNode(Node &n) :node(n) {
+
+   pathNode(Node &n) {
+              node=&n;
               twv=false;
               cv=false;
               twvTot=0;
@@ -58,53 +70,18 @@ static const double cargoLimit=100; //need to set this data
               cargo=0;
               distPrev=0;
               totDistFromDepot=0;
-   /*pathNode(const Node &n) :node(n) {
-              twv=false;
-              cv=false;
-              twvTot=0;
-              cvTot=0;
-              cargo=0;
-              distPrev=0;
-     o*/         totDistFromDepot=0;
-
-///std::cout<<"constructor1"; dump();
-};
-//    pathNode(Node &n, const Order &o) :node(n) {order=o;};
+    };
     pathNode(const pathNode &other):node(other.node) {
               copyvalues(other);
-//              std::cout<<"constructor2"; dump();
      };
     pathNode& operator=(const pathNode &other) {
-           //   node=other.node;
               copyvalues(other);
      };        
 
-/*
-    pathNode() {} ;
-    pathNode(Node &n) {node=n;};
-    pathNode(const pathNode &other) {
-              node=other.node;
-              order=other.order;
-              cargoLimit=other.cargoLimit;
-              twv=other.twv;
-              cv=other.cv;
-              twvTot=other.twvTot;
-              cvTot=other.cvTot;
-              cargo=other.cargo;
-              distPrev=other.distPrev;
-              totDistFromDepot=other.totDistFromDepot;
-             };
-  */
     double setDistPrev(const Node &prev) {
-try{
-          distPrev=node.distance(prev);
-}
-catch (std::exception& e)
-{
-    std::cerr << "Exception catched : " << e.what() << std::endl;
-}
+          distPrev=node->distance(prev);
    };
-    double getDistFromStop(pathNode &other) {return node.distance(other.node);};
+    double getDistFromStop(pathNode &other) {return node->distance(other.getnode());};
     void   setValues(pathNode &prev);
     void   setValues(const Node &depot);
 

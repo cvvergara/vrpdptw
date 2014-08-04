@@ -43,7 +43,7 @@ int main (int argc, char **argv)
         std::cout << "Problem '" << infile << "'loaded\n";
         P.dump();
         Solution S(P);
-
+/*
         std::cout << "\n\n\n******************************Solution: initial no hill Construction \n";
         S.initialNoHillConstruction();
         Plot plot4(S);
@@ -55,14 +55,22 @@ S.R.clear();
         Plot plot3(S);
         title = (std::string)infile+"-NoNoSolution.png";
         plot3.out(title, true, 800, 800, (char*)title.c_str());
-/*  passed tests
+*/
 
 S.R.clear();
         std::cout << "\n\n\n******************************Solution: dumb solution \n";
         S.dumbConstruction();
-        Plot plot(S);
-        title = (std::string)infile+"-DumbSolution.png";
-        plot.out(title, true, 800, 800, (char*)title.c_str());
+//        Plot plot(S);
+//        title = (std::string)infile+"-DumbSolution.png";
+//        plot.out(title, true, 800, 800, (char*)title.c_str());
+S.R.clear();
+        std::cout << "\n\n\n******************************Solution: dumb and hill opt \n";
+        S.dumbAndHillConstruction();
+//        Plot plot5(S);
+//        title = (std::string)infile+"-SortedSolution.png";
+//        plot5.out(title, true, 800, 800, (char*)title.c_str());
+
+/*
 
 S.R.clear();
         std::cout << "\n\n\n******************************Solution: sorted orders by distance solution \n";
