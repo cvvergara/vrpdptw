@@ -44,8 +44,8 @@ private:
     bool checkIntegrity(int nodesCant);
     bool earlyArrival(double D) const { return D < tw_open;};
     bool lateArrival(double D) const { return D > tw_close;};
-    bool ispickup() const { return did;};
-    bool isdelivery() const { return pid;};
+    bool ispickup() const { return did and nid!=0;};
+    bool isdelivery() const { return pid and nid!=0;};
     bool isdepot() const {return nid==0;};
     bool sameorder(Node &n) {return orderPtr == n.orderPtr;};
     double distance(const Node &n2) const {

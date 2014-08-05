@@ -43,8 +43,8 @@ int main (int argc, char **argv)
         std::cout << "Problem '" << infile << "'loaded\n";
         P.dump();
         Solution S(P);
-        std::cout << "\n\n\n******************************Solution: dumbConstructionAndBestMoveForward \n";
-        S.dumbConstructionAndBestMoveForward();
+        std::cout << "\n\n\n******************************Solution: initialFeasableSolution \n";
+        S.initialFeasableSolution();
 /*
         std::cout << "\n\n\n******************Y************Solution: initial no hill Construction \n";
         S.initialNoHillConstruction();

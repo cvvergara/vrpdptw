@@ -72,8 +72,10 @@ pickupPtr->dump();
          return *this;
 }
 */
-bool isUnasigned() const { return !asigned;};
-bool isAsigned()   const { return asigned;};
+bool isUnasigned() const { return !asigned;}
+bool isAsigned()   const { return asigned;}
+int getpid() const {return pickup->getpid();}
+int getdid() const {return delivery->getdid();}
 
 
 

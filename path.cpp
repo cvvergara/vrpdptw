@@ -16,7 +16,22 @@
 
 
 
-    void Path::removeOrder(int oid){
+   int Path::getdpos(const int oid) const {
+          int i=0;
+          while (i<path.size() and !(path[i].isdelivery() and path[i].getoid()==oid))
+            i++; 
+         return i;
+    }
+   int Path::getppos(const int oid) const {
+          int i=0;
+          while (i<path.size() and !(path[i].ispickup() and path[i].getoid()==oid))
+            i++; 
+         return i;
+    }
+
+
+
+    void Path::removeOrder(const int oid){
          removePickup(oid);
          removeDelivery(oid);
     }
@@ -51,11 +66,6 @@
 
     void Path::push_back(pathNode pathstop) {
           path.push_back(pathstop);
-//          setvalues(0);
-/*         if (path.size()==0) pathstop.setValues(*depot);
-         else pathstop.setValues(path.back());
-         path.push_back(pathstop);
-         setDepotValues();*/
     }
 
     void Path::insert(pathNode pathstop,int at) {

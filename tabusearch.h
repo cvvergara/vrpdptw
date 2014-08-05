@@ -36,7 +36,7 @@ class TabuSearch {
     TabuSearch(Solution &s) : S(s), Best(s) {
         iter = 0;
         tabuLength = 30;            // set a reasonable default
-        SCost = BestCost = Best.getCost();  // cost of the best
+        SCost = BestCost = Best.getcost();  // cost of the best
         debugTabu = false;
         debugPlots = false;
     };

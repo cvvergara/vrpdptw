@@ -50,6 +50,8 @@ class Route {
 
     int getnid(int i) { return routePath.getnid(i); }
     int getoid(int i) { return routePath.getoid(i); }
+    int getppos (const int oid) const;
+    int getdpos (const int oid) const;
 
 
 
@@ -79,6 +81,9 @@ class Route {
     bool sameorder(int i,int j) {return routePath.sameorder(i,j);}
     double getcost() {return routePath.getcost(w1,w2,w3);}
     double feasable() {return routePath.feasable();}
+    int findBetterDeliveryForward(const int ppos,const int dpos,double &bestcost);
+    double costBetterPickupBackward(int &bppos, int &bdpos) ;
+    double findBestCostBackForw(const int oid,int &bppos,int &bdpos);
 
 
 
@@ -92,6 +97,13 @@ class Route {
 //    void smalldump();
     void dumppath();
     void dump();
+
+ void addNode(pathNode &node) {
+
+    routePath.push_back(node);
+
+}
+
 };
 
 #endif

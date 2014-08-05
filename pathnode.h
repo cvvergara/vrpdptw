@@ -30,10 +30,10 @@ static const double cargoLimit=100; //need to set this data
     Node& getnode(){return *node;};
     bool ispickup() const {return node->ispickup();}
     bool isdepot() const {return node->isdepot();}
-    bool isdelivery() const {return node->isdelivery();}
+    bool isdelivery() const {return  node->isdelivery();}
     bool sameorder(pathNode &n) const {return node->sameorder(n.getnode());}
-    int getnid() {return node->getnid();}
-    int getoid() {return node->getoid();}
+    int getnid() const {return node->getnid();}
+    int getoid() const {return node->getoid();}
 
     
 

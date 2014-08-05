@@ -11,7 +11,7 @@ const double EPSILON = 0.001;
 
 class Solution {
   public:
-    Problem P;
+    Problem& P;
     std::vector<Route> R;
     //std::vector<path> R; 
     //std::vector<int> mapOtoR;
@@ -20,28 +20,25 @@ class Solution {
 
     Solution(Problem& p): P(p) {
         totalDistance = 0;
-        P=p;
         totalCost = 0;
    //     mapOtoR.clear();
    //     mapOtoR.resize(P.O.size());
    //     for (int i=0; i<P.O.size(); i++) mapOtoR[i] = -1;
-        P.dump();
         R.clear();
     };
 
     void dump();
     void dumproutes();
 
-//    void dumbConstruction();
-//    void dumbConstructionAndBestMoveForward();
-//    void withSortedOrdersConstruction();
-//    void dumbAndHillConstruction();
-//    void deliveryBeforePickupConstruction();
-//    void sequentialConstruction();
-//    void initialNoHillConstruction();
+    void dumbConstruction();
+    void dumbConstructionAndBestMoveForward();
+    void withSortedOrdersConstruction();
+    void dumbAndHillConstruction();
+    void deliveryBeforePickupConstruction();
+    void sequentialConstruction();
+    void initialNoHillConstruction();
 
-    void initialFeasableSolution();
-//    void initialConstruction();
+    void initialConstruction();
 
     void computeCosts();
 

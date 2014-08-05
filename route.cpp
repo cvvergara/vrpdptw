@@ -218,6 +218,19 @@ bool Route::insertOrder(int oid, bool mustBeValid) {
 void Route::addOrder( const Order &o) {
     addPickup(o);
     addDelivery(o);
+
+//    addNode(o.getPickup());
+//    addNode(o.getDelivery());
+
+}
+
+
+int  Route::getppos  (const int oid) const  {
+    return routePath.getppos(oid);
+}
+
+int  Route::getdpos (const int oid) const {
+    return routePath.getdpos(oid);
 }
 
 void Route::removeOrder(const Order &o) {
@@ -283,6 +296,72 @@ void Route::findBetterForward(int &bestI, int &bestJ) {
            }
 }
 
+/*
+bppos, bdpos = best pickup postition, best delivery postition
+ppos, dpos = pickup postition, delivery postition
+*/
+int Route::findBetterDeliveryForward(const int ppos,const int dpos,double &bestcost) {
+           int bestJ=-1;
+           int deliveryPos=dpos;
+           if ( not (ppos<dpos and sameorder(ppos,dpos) and ispickup(ppos) and isdelivery(dpos) ))  return -1; //thoerically we never get to this point if called from funtion bellow
+           for (int j=ppos+1; j<routePath.size(); j++) {
+                  move(deliveryPos,j); deliveryPos=j;   
+std::cout<<"\n----------------Moved delivery\n";
+routePath.smalldump();
+                  if (getcost()<bestcost){
+                             bestcost=getcost();
+                             bestJ=j;
+                  }
+           }
+           return  bestJ;
+}
+
+/*
+bppos, bdpos = best pickup postition, best delivery postition
+ppos, dpos = pickup postition, delivery postition
+*/
+double Route::costBetterPickupBackward(int &bppos, int &bdpos) {
+           double bestcost=getcost();
+           int ppos=bppos;
+	   int dpos=bdpos;
+	   int bestI=-1;
+           int bestJ=-1;
+           int j;
+           if ( not (ppos<dpos and sameorder(ppos,dpos) and ispickup(ppos) and isdelivery(dpos)) ) return bestcost;
+           for (int i=1;i<dpos;i++) { //ensuring pickup comes before delivery
+              j=-1;
+              move (ppos, i); ppos=i;               
+std::cout<<"\n************Moved pickup\n";
+routePath.smalldump();
+              j=findBetterDeliveryForward(ppos,dpos,bestcost);
+              if (j>0) { //a better cost was found
+                    bestI=i;
+                    bestJ=j;
+             }
+           }
+           if ( bestI=bestJ=-1 ) {
+                 bppos=ppos;
+                 bdpos=dpos;
+                 return bestcost;                    //no better cost was found
+           } else {
+                 bppos=bestI;
+                 bdpos=bestJ;
+                 return bestcost;
+           }
+}
+
+double Route::findBestCostBackForw(const int oid,int &bppos,int &bdpos){
+          int ppos=routePath.getppos(oid);  //actual positions and costs as best
+          int dpos=routePath.getdpos(oid);
+          double actualcost=getcost();
+          double bestcost=actualcost;
+          bppos=ppos; bdpos=dpos; 
+std::cout<<"\n************Initial Route ***************\n";
+routePath.smalldump();
+          bestcost=costBetterPickupBackward(bppos, bdpos);
+          return bestcost;
+}
+          
 
 
 

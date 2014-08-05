@@ -49,6 +49,8 @@ class Path{
     int size() {return path.size();};
     int getnid(int i) { return path[i].getnid(); };
     int  getoid(int i) { return path[i].getoid(); };
+    int getdpos(const int oid) const;
+    int getppos(const int oid) const;
     void remove(int at);
     void removeOrder(int orderid);
     void removePickup(int orderid);

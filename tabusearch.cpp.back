@@ -33,6 +33,7 @@ std::cout << "tabuLength: " << tabuLength << std::endl;
     while (iter++ < maxIter) {
 
 std::cout << "---------- TabuSearch::solve: iter: " << iter << std::endl;
+// nwri number of with in route searches
 
         int nwri = S.P.N.size()/14;
         double ardl = S.getAverageRouteDurationLength();
@@ -89,6 +90,8 @@ for (int i=0; i<T.size(); i++)
                 // if we are eliminating a route
                 // then the new solution must be feasible otherwise 
                 // it is ok to have in infeasible route
+//removes an order form one route and insertes it in another
+//it can leave the route empty
 bool TabuSearch::doSPI() {
 //std::cout << "Enter TabuSearch::doSPI(): " << std::endl;;
     // initialize bestMove
@@ -106,23 +109,23 @@ bool TabuSearch::doSPI() {
         }
 
         // copy the route this order is in and get the cost with the order
-        Route r1(S.R[S.mapOtoR[oid]]);
-        double r1oldc = r1.getCost();
+//        Route r1(S.R[S.mapOtoR[oid]]);
+        double r1oldc = r1.getcost();
 
         // remove the order can get the cost minus the order
         r1.removeOrder(oid);
-        double r1newc = r1.getCost();
+        double r1newc = r1.getcost();
 
         //get number of orders in this route
         int nord = r1.orders.size() / 2;
 
         for ( int rid=0; rid<S.R.size(); rid++) {
             // can't move order to self
-            if (S.mapOtoR[oid] == rid) continue;
+//            if (S.mapOtoR[oid] == rid) continue;
 
             // copy the route to work with it
             Route r2(S.R[rid]);
-            double r2oldc = r2.getCost();
+            double r2oldc = r2.getcost();
 
             // try to place it in the new route
             // if it is eliminating a route then the move MUST be valid
@@ -131,7 +134,7 @@ bool TabuSearch::doSPI() {
             if (!ok) continue;
 
             // calculate the savings
-            double r2newc = r2.getCost();
+            double r2newc = r2.getcost();
 
             // savings is the sum of costs before the change 
             // minus the sum of the costs after the change
@@ -149,7 +152,7 @@ std::cout << "       r2: "; r2.dump();
             m.moveType = 1;
             m.oid1 = oid;
             m.oid2 = -1;
-            m.rid1 = S.mapOtoR[oid];
+            //m.rid1 = S.mapOtoR[oid];
             m.rid2 = rid;
             m.savings = savings;
             int k = 0;
@@ -203,6 +206,7 @@ bestMove.dump();
     return true;
 }
 
+//swaping orders beteen routes take o1 from r1 and swap with order on from route rx
 
 bool TabuSearch::doSBR() {
 std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
@@ -223,10 +227,10 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
             if (currentRoute == S.mapOtoR[oid2]) continue;
 //std::cout << "2 TabuSearch::doSBR() currentRoute<S.R.size: " << currentRoute<<','<<S.R.size()<<std::endl;;
             Route r1(S.R[currentRoute]);
-            double r1oldc = r1.getCost();
+            double r1oldc = r1.getcost();
 //std::cout << "2.1 TabuSearch::doSBR() S.mapOtoR[oid2]<S.R.size: " << S.mapOtoR[oid2]<<','<<S.R.size()<<std::endl;;
             Route r2(S.R[S.mapOtoR[oid2]]);
-            double r2oldc = r2.getCost();
+            double r2oldc = r2.getcost();
 
 //std::cout << "2.2 TabuSearch::doSBR(): old costs" << r1oldc<<','<<r2oldc<<std::endl;
             Move m;
@@ -241,12 +245,12 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
 
             for (int i=0; i<r1p.size(); i++) {
 //std::cout << "3 TabuSearch::doSBR(): " <<i<< std::endl;;
-                if (r1p[i] == S.P.O[oid1].pid) {
-                    r1p[i] = S.P.O[oid2].pid;
+                if (r1p[i] == S.P.O[oid1].getpid()) {
+                    r1p[i] = S.P.O[oid2].getpid();
                     m.ppos1 = i;
                 }
-                else if (r1p[i] == S.P.O[oid1].did) {
-                    r1p[i] = S.P.O[oid2].did;
+                else if (r1p[i] == S.P.O[oid1].getdid()) {
+                    r1p[i] = S.P.O[oid2].getdid();
                     m.spos1 = i;
                     break;
                 }
@@ -254,12 +258,12 @@ std::cout << "Enter TabuSearch::doSBR(): " << std::endl;;
 
             for (int i=0; i<r2p.size(); i++) {
 //std::cout << "4 TabuSearch::doSBR(): " <<i<< std::endl;;
-                if (r2p[i] == S.P.O[oid2].pid) {
-                    r2p[i] = S.P.O[oid1].pid;
+                if (r2p[i] == S.P.O[oid2].getpid()) {
+                    r2p[i] = S.P.O[oid1].getpid();
                     m.ppos2 = i;
                 }
-                else if (r2p[i] == S.P.O[oid2].did) {
-                    r2p[i] = S.P.O[oid1].did;
+                else if (r2p[i] == S.P.O[oid2].getdid()) {
+                    r2p[i] = S.P.O[oid1].getdid();
                     m.spos2 = i;
                     break;
                 }
@@ -325,7 +329,7 @@ bool TabuSearch::doWRI() {
         // for each node move it forward and backwards
         //     looking for a lower cost position
         Route& r(S.R[rid]);
-        double roldc = r.getCost();
+        double roldc = r.getcost();
 
         for (int i=0; i<r.path.size(); i++) {
             // move it forward
@@ -433,9 +437,9 @@ void TabuSearch::applyMove(Move& m) {
 //m.dump();
 /*
 std::cout << "  bef SCost: " << SCost << std::endl;
-std::cout << "  bef Route[" << m.rid1 << "](" << S.R[m.rid1].getCost()  << "): ";
+std::cout << "  bef Route[" << m.rid1 << "](" << S.R[m.rid1].getcost()  << "): ";
 if (m.rid1 != -1) S.R[m.rid1].dump(); else std::cout << std::endl;
-std::cout << "  bef Route[" << m.rid2 << "](" << S.R[m.rid2].getCost()  << "): ";
+std::cout << "  bef Route[" << m.rid2 << "](" << S.R[m.rid2].getcost()  << "): ";
 if (m.rid2 != -1) S.R[m.rid2].dump(); else std::cout << std::endl;
 */
 /*
@@ -459,9 +463,10 @@ if (m.oid1 == 42 || m.oid2 == 42) {
             S.R[m.rid1].removeOrder(m.oid1);
             // insert the order in this route
             it = S.R[m.rid2].path.begin();
-            S.R[m.rid2].path.insert(it+m.ppos1, S.P.N[S.P.O[m.oid1].pid].getnid());
+            //for the solution S for the route number m.rid2 we get the path of that route an we insert the postition to the path where we are going to insert the node to
+            S.R[m.rid2].path.insert(it+m.ppos1, S.P.N[S.P.O[m.oid1].getpid()].getnid()); 
             it = S.R[m.rid2].path.begin();
-            S.R[m.rid2].path.insert(it+m.spos1, S.P.N[S.P.O[m.oid1].did].getnid());
+            S.R[m.rid2].path.insert(it+m.spos1, S.P.N[S.P.O[m.oid1].getdid()].getnid());
             it = S.R[m.rid2].orders.begin();
             S.R[m.rid2].orders.insert(it+m.ppos1, m.oid1);
             it = S.R[m.rid2].orders.begin();
@@ -472,10 +477,10 @@ if (m.oid1 == 42 || m.oid2 == 42) {
             break;
         case 2: // SBR move
             // update the paths
-            S.R[m.rid1].path[m.ppos1] = S.P.O[m.oid2].pid;
-            S.R[m.rid1].path[m.spos1] = S.P.O[m.oid2].did;
-            S.R[m.rid2].path[m.ppos2] = S.P.O[m.oid1].pid;
-            S.R[m.rid2].path[m.spos2] = S.P.O[m.oid1].did;
+            S.R[m.rid1].path[m.ppos1] = S.P.O[m.oid2].getpid();
+            S.R[m.rid1].path[m.spos1] = S.P.O[m.oid2].getdid();
+            S.R[m.rid2].path[m.ppos2] = S.P.O[m.oid1].getpid();
+            S.R[m.rid2].path[m.spos2] = S.P.O[m.oid1].getdid();
             // update the orders
             S.R[m.rid1].orders[m.ppos1] = m.oid2;
             S.R[m.rid1].orders[m.spos1] = m.oid2;
@@ -517,12 +522,12 @@ if (m.oid1 == 42 || m.oid2 == 42) {
 
     // update solution cost
 //    S.computeCosts();    // its implicit in the funtion bellow
-    SCost = S.getCost();
+    SCost = S.getcost();
 /*
 std::cout << "  aft SCost: " << SCost << std::endl;
-std::cout << "  aft Route[" << m.rid1 << "](" << S.R[m.rid1].getCost()  << "): ";
+std::cout << "  aft Route[" << m.rid1 << "](" << S.R[m.rid1].getcost()  << "): ";
 if (m.rid1 != -1) S.R[m.rid1].dump(); else std::cout << std::endl;
-std::cout << "  aft Route[" << m.rid2 << "](" << S.R[m.rid2].getCost()  << "): ";
+std::cout << "  aft Route[" << m.rid2 << "](" << S.R[m.rid2].getcost()  << "): ";
 if (m.rid2 != -1) S.R[m.rid2].dump(); else std::cout << std::endl;
 */
 /*
@@ -562,13 +567,13 @@ void TabuSearch::addMoveTabu(Move& m) {
     switch (m.moveType) {
         case 1:
             // moke the move tabu
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid2;
             tm.topos = m.ppos1;
             tm.move  = m.moveType;
             addTabu(tm);
             // prevent the move back also
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid1;
             tm.topos = -1;
             tm.move  = m.moveType;
@@ -576,23 +581,23 @@ void TabuSearch::addMoveTabu(Move& m) {
             break;
         case 2:
             // make the moves tabu
-            tm.node  = S.P.O[m.oid2].pid;
+            tm.node  = S.P.O[m.oid2].getpid();
             tm.torid = m.rid1;
             tm.topos = m.ppos1;
             tm.move  = m.moveType;
             addTabu(tm);
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid2;
             tm.topos = m.ppos2;
             tm.move  = m.moveType;
             addTabu(tm);
             // make the moves back tabu
-            tm.node  = S.P.O[m.oid2].pid;
+            tm.node  = S.P.O[m.oid2].getpid();
             tm.torid = m.rid2;
             tm.topos = -1;
             tm.move  = m.moveType;
             addTabu(tm);
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid1;
             tm.topos = -1;
             tm.move  = m.moveType;
@@ -600,7 +605,7 @@ void TabuSearch::addMoveTabu(Move& m) {
             break;
         case 3:
             /*
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid1;
             tm.topos = m.ppos2;
             addTabu(tm);
@@ -651,19 +656,19 @@ bool TabuSearch::isMoveTabu(Move& m) {
 
     switch (m.moveType) {
         case 1:
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid2;
             tm.topos = m.ppos1;
             tm.move  = m.moveType;
             ret = ret || isTabu(tm);
             break;
         case 2:
-            tm.node  = S.P.O[m.oid2].pid;
+            tm.node  = S.P.O[m.oid2].getpid();
             tm.torid = m.rid1;
             tm.topos = m.ppos1;
             tm.move  = m.moveType;
             ret = ret || isTabu(tm);
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid2;
             tm.topos = m.ppos2;
             tm.move  = m.moveType;
@@ -671,7 +676,7 @@ bool TabuSearch::isMoveTabu(Move& m) {
             break;
         case 3:
             /*
-            tm.node  = S.P.O[m.oid1].pid;
+            tm.node  = S.P.O[m.oid1].getpid();
             tm.torid = m.rid1;
             tm.topos = m.ppos2;
             addTabu(tm);
