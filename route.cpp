@@ -131,10 +131,6 @@ double Route::testPath(const std::vector<int>& tp) {
 
 
 
-double Route::getCost() {
-    return    cost = w1*D + w2*TWV + w3*CV;
-}
-
 
 
 bool Route::insertOrder(int oid, bool mustBeValid) {
@@ -219,119 +215,59 @@ bool Route::insertOrder(int oid, bool mustBeValid) {
     return false;
 */}
 
-void Route::addOrder( Order &o) {
-//Nodopid de la orden
-
-//    pathNode pickup(P.N[o.pid]);
-    pathNode pickup(*o.pickup);
-    pathNode delivery(*o.delivery);
-    routePath.push_back(pickup);
-    routePath.push_back(delivery);
-//    routePath.dump();
-//std::cout<<"\nooooooooooooooooooooooooooooooooooooooooooo\n";
-/*
-    path.push_back(o.pid);
-    path.push_back(o.did);
-    orders.push_back(o.oid);
-    orders.push_back(o.oid);
-    updated = true;
-*/
+void Route::addOrder( const Order &o) {
+    addPickup(o);
+    addDelivery(o);
 }
 
 void Route::removeOrder(const Order &o) {
-/*
-    std::vector<int>::iterator it;
-    it = std::find(path.begin(), path.end(), o.pid);
-    if (it != path.end()) path.erase(it);
-    it = std::find(path.begin(), path.end(), o.did);
-    if (it != path.end()) path.erase(it);
-    it = std::find(orders.begin(), orders.end(), o.oid);
-    if (it != orders.end()) orders.erase(it);
-    it = std::find(orders.begin(), orders.end(), o.oid);
-    if (it != orders.end()) orders.erase(it);
-    updated = true;
-*/
+    routePath.removeOrder(o.oid);
 }
-
 
 void Route::removeOrder(const int oid) {
-    const Order& o = P.O[oid];
-    removeOrder(o);
+    routePath.removeOrder(oid);
 }
 
-int Route::addPickup(const Order &o) {
+void  Route::addPickup(const Order &o) {
     pathNode pickup(*o.pickup);
     routePath.push_back(pickup);
-/*
-    path.push_back(o.pid);
-    orders.push_back(o.oid);
-    hillClimbOpt();
-    update();
-    return (TWV || CV)? 0 : 1;
-*/
 }
 
 
 void Route::addDelivery(const Order &o) {
     pathNode delivery(*o.delivery);
     routePath.push_back(delivery);
-/*
-    path.push_back(o.did);
-    orders.push_back(o.oid);
-    hillClimbOpt();
-    update();
-*/
+}
+
+bool Route::findImprovment(int i) {
+           double oldcost= getcost();
+           bool improved=false;
+           if (isdepot(i)) return false;
+           for (int j=i+1; j<routePath.size() and !(ispickup(i) and isdelivery(j) and sameorder(i,j)); j++) {
+                   swapnodes(i,j);
+                   if (getcost()<oldcost)  return true;
+                   else  swap(i,j);
+           }
+           return false;
 }
 
 
 void Route::hillClimbOpt() {
-     routePath.hillClimbOpt();
-/*//std::cout << "Enter Route::hillClimbOpt: rid: " << rid << std::endl;
-    double oldcost = getCost();
-    while (true) {
-        bool improved = false;
-        for (int i=0; i<path.size(); i++) {
-            for (int j=i+1; j<path.size(); j++) {
-                // don't move the delivery ahead of the pickup
-                if (orders[i] == orders[j]) continue;
-                if (P.N[path[j]].closes() < P.N[path[i]].closes()) {
-                    swap(path[i], path[j]);
-                    swap(orders[i], orders[j]);
-                    update();
-                    double newcost = getCost();
-                    if (newcost < oldcost) {
-                        improved = true;
-//std::cout << "rid: " << rid << ", HC[" << i << "," << j << "] old: " << oldcost << ", new: " << newcost << std::endl;
-                        oldcost = newcost;
-                    }
-                    else {
-                        swap(path[j], path[i]);
-                        swap(orders[j], orders[i]);
-                        update();
-                    }
-                }
-            }
-        }
-        if (!improved) break;
-    }
-    //std::cout << "Exit Route::hillClimbOpt\n";
-*/
+           double original=getcost();
+           int i=0;
+           while (i<routePath.size()-1) {
+              if (!findImprovment(i)) i++;
+              else i=0;
+           }
 }
 
+
 void Route::dump() {
-    routePath.seteval(w1,w2,w3);
     routePath.smalldump();
-    std::cout <<  " Route cost: "<< routePath.getcost();
+    std::cout <<  " Route cost: "<< getcost();
     routePath.dump();
 }
 
-int Route::getnid(int i) {
-    return routePath.getnid(i);
-}
-
-int Route::getoid(int i) {
-    return routePath.getoid(i);
-}
 
 void Route::dumppath() {
     routePath.smalldump();

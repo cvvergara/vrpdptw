@@ -21,17 +21,17 @@
 class Path{
   private:
     Node *depot;
-    double w1,w2,w3;
-       
-  public:
+//    double w1,w2,w3;
     int rid;
-
-    std::deque<pathNode> path;      // node ids along the path and more
-    bool twv_depot;
-    bool cv_depot;
     double D;      // duration
     int TWV;    // TW violations
     int CV;     // capacity violations
+    bool twv_depot;
+    bool cv_depot;
+    std::deque<pathNode> path;      // node ids along the path and more
+       
+  public:
+
 
 
     Path (Node &d){
@@ -39,16 +39,20 @@ class Path{
          twv_depot=false;
          cv_depot=false;
 	 D= TWV=CV=0;
-         w1=w2=w3=1;
+//         w1=w2=w3=1;
          pathNode dep(d);
          path.push_back(dep);
      };
 
     ~Path() {};
 
-    void seteval(double iw1,double iw2, double iw3){w1=iw1;w2=iw2;w3=iw3;};
+    int size() {return path.size();};
     int getnid(int i) { return path[i].getnid(); };
     int  getoid(int i) { return path[i].getoid(); };
+    void remove(int at);
+    void removeOrder(int orderid);
+    void removePickup(int orderid);
+    void removeDelivery(int orderid);
     void swapnodes(int i,int j);
     void swap(int i,int j);
     void push_back(pathNode pathstop);
@@ -61,11 +65,10 @@ class Path{
     bool isdelivery(int i) {return path[i].isdelivery();}
     bool isdepot(int i) {return path[i].isdepot();}
     bool sameorder(int i,int j){return path[i].sameorder(path[j]);}
-    bool findImprovment(int i);
-    void hillClimbOpt();
-    double getcost() {
-       return   w1*D + w2*TWV + w3*CV;
-    }
+    bool feasable() { return TWV == 0 and CV == 0;}
+    bool hascv() { return CV != 0;}
+    bool hastwv() { return TWV != 0;}
+    double getcost(double w1,double w2,double w3) { return   w1*D + w2*TWV + w3*CV; }
 
 
 };
@@ -94,9 +97,7 @@ class Path{
     int addPickup(const Order &o);
     void addDelivery(const Order &o);
 
-    void hillClimbOpt();
 
-    void dump();
 };
 */
 #endif

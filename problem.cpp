@@ -122,7 +122,7 @@ bool Problem::checkIntegrity() const {
      Node node=*it;
      flag= flag and node.checkIntegrity(nodesCant);
    }
-  for (std::vector<Order>::const_iterator it= O.begin(); it!=O.end(); ++it) {
+  for (std::deque<Order>::const_iterator it= O.begin(); it!=O.end(); ++it) {
      Order order=*it;
      flag= flag and order.checkIntegrity(nodesCant);
    }

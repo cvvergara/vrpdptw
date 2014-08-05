@@ -46,9 +46,39 @@ void Solution::deliveryBeforePickupConstruction() {
     R.push_back(dumbroute);
 };
 
-
 void Solution::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
+    int M = 0;
+    R.clear();
+    Order order;
+    std::deque<Order> unOrders;
+    std::deque<Order> waitOrders;
+    P.sortOrdersbyDist();
+    unOrders=P.O;
+    while (!unOrders.empty()) {
+       Route route(P);
+       std::cout<<"\n\n*******1 original orders"<<P.O.size()<<" wait orders "<< waitOrders.size()<<" unassigned Orders "<<unOrders.size()<<"\n";
+       while (!unOrders.empty()) {
+          order=unOrders.front();
+          unOrders.pop_front();
+          route.addOrder(order);
+          route.hillClimbOpt();     
+          if (!route.feasable()) {
+                route.removeOrder(order);
+                waitOrders.push_back(order);
+          }
+       }
+       R.push_back(route);
+       unOrders=waitOrders;
+       waitOrders.clear();
+     }
+     dump();
+}
+
+
+
+/*
+    // std:dd:cout << "Enter Problem::sequentialConstruction\n";
     int M = 0;
     R.clear();
     P.sortOrdersbyDist();
@@ -86,6 +116,9 @@ void Solution::sequentialConstruction() {
 
     //std::cout << "Exit Problem::sequentialConstruction\n";
 }
+*/
+
+
 
 void Solution::initialNoHillConstruction() {
         for (int i=0; i<P.getOrderCount(); i++) {
@@ -122,7 +155,7 @@ void Solution::computeCosts() {
     totalCost = 0.0;
     totalDistance = 0.0;
     for (int i=0; i<R.size(); i++) {
-        totalCost += R[i].getCost();
+        totalCost += R[i].getcost();
         totalDistance += R[i].D;
     }
 }

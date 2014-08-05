@@ -25,7 +25,7 @@ class Route {
 
     Path routePath;
 
-    std::vector<int> path;      // node ids along the path
+//    std::vector<int> path;      // node ids along the path
     std::vector<int> orders;    // order ids associated with the nodes
 //    std::vector<int> capacity;  // capacity after node is loaded
 //    std::vector<double> pdist;  // distance at node max(arrival time, tw_open)

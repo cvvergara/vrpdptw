@@ -48,6 +48,11 @@ class Route {
 
     Route &operator = (const Route &r) { P = r.P; return *this; };
 
+    int getnid(int i) { return routePath.getnid(i); }
+    int getoid(int i) { return routePath.getoid(i); }
+
+
+
     void update();
     bool earlyArrival(int pathstop,double D) const;
     bool lateArrival(int  pathstop,double D) const;
@@ -58,21 +63,27 @@ class Route {
     double testPath(const std::vector<int>& tp);
     bool capacityViolation(double q) const;
 
-    double getCost();
-
-    void addOrder(Order &o);
 
     bool insertOrder(int oid, bool mustBeValid);
-
     void removeOrder(const Order &o);
     void removeOrder(const int oid);
 
-    int addPickup(const Order &o);
-    void addDelivery(const Order &o);
+    void swapnodes(int i,int j) { routePath.swapnodes(i,j);}
+    void swap(int i,int j) { routePath.swap(i,j);}
+    bool ispickup(int i) {return routePath.ispickup(i);}
+    bool isdelivery(int i) {return routePath.isdelivery(i);}
+    bool isdepot(int i) {return routePath.isdepot(i);}
+    bool sameorder(int i,int j) {return routePath.sameorder(i,j);}
+    double getcost() {return routePath.getcost(w1,w2,w3);}
+    double feasable() {return routePath.feasable();}
 
+
+
+    void addOrder(const Order &o);
+    void addPickup(const Order &o);
+    void addDelivery(const Order &o);
+    bool findImprovment(int i);
     void hillClimbOpt();
-    int getnid(int i);
-    int getoid(int i);
 //    void smalldump();
     void dumppath();
     void dump();

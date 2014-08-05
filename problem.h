@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <deque>
 #include <math.h>
 
 #include "node.h"
@@ -26,7 +27,7 @@ class Problem {
     //Node depot;
     double atwl;
     std::vector<Node> N;    // vector of nodes
-    std::vector<Order> O;   // vector of orders
+    std::deque<Order> O;   // vector of orders
 
 
     // variables for plotting

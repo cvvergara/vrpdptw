@@ -55,7 +55,6 @@ S.R.clear();
         Plot plot3(S);
         title = (std::string)infile+"-NoNoSolution.png";
         plot3.out(title, true, 800, 800, (char*)title.c_str());
-*/
 
 S.R.clear();
         std::cout << "\n\n\n******************************Solution: dumb solution \n";
@@ -70,7 +69,6 @@ S.R.clear();
 //        title = (std::string)infile+"-SortedSolution.png";
 //        plot5.out(title, true, 800, 800, (char*)title.c_str());
 
-/*
 
 S.R.clear();
         std::cout << "\n\n\n******************************Solution: sorted orders by distance solution \n";
@@ -94,15 +92,15 @@ S.R.clear();
 
 //        S.dump();
           
-/*
         S.sequentialConstruction();
 
         //S.initialConstruction();
-        S.computeCosts();
-        std::cout << "Initial Solution: SCost: " << S.getCost() << std::endl;
-        S.dump();
-        P.dump();
+//        S.computeCosts();
+//        std::cout << "Initial Solution: SCost: " << S.getCost() << std::endl;
+//        S.dump();
+//        P.dump();
 
+/*
 //#id 1
         TabuSearch TS(S);
         TS.debugTabu = true;

@@ -15,6 +15,35 @@
 #include "path.h"
 
 
+
+    void Path::removeOrder(int oid){
+         removePickup(oid);
+         removeDelivery(oid);
+    }
+
+
+    void Path::removePickup(int oid){
+          for (int i=0;i<path.size();i++) {
+               if (path[i].ispickup() and path[i].getoid()==oid ){
+                   remove(i); break; //only 1 pickup per order
+               }
+
+         }
+    }
+
+    void Path::removeDelivery(int oid){
+           for (int i=0;i<path.size();i++) {
+               if (path[i].isdelivery() and path[i].getoid()==oid ){
+                   remove(i); break; //only 1 delivery per order
+               }
+           }
+    }      
+
+    void Path::remove(int at){ 
+          if (!path.empty()) path.erase(path.begin()+at);
+    }
+ 
+
     void Path::push_back(pathNode pathstop) {
           path.push_back(pathstop);
           setvalues(0);
@@ -22,7 +51,7 @@
          else pathstop.setValues(path.back());
          path.push_back(pathstop);
          setDepotValues();*/
-}
+    }
 
     void Path::emplace(pathNode pathstop,int at) {
 /*         pathNode &prev= (at==0)? depot: path[at];        
@@ -47,7 +76,6 @@
           if(i>j)  std::cout<<"This is a restrictive swap, requierment: i<j\n";  
           else if (ispickup(i) and isdelivery(j) and sameorder(i,j)) std::cout<<"This is a restrictive swap, requierment: cant swap from the same order\n";
           else {
-              std::cout<<"\nSwaping ("<<i<<","<<j<<")!";
               pathNode temp(path[i]);
               path[i]=path[j];
               path[j]=temp;
@@ -57,7 +85,6 @@
      }
 
      void Path::swap(int i,int j){
-          std::cout<<"\nReSwaping ("<<i<<","<<j<<")";
           pathNode temp(path[i]);
           path[i]=path[j];
           path[j]=temp;
@@ -77,69 +104,6 @@
               TWV = (twv_depot)? TWV+1:TWV;
               CV = (cv_depot)? CV+1:CV;
       }
-
-     bool Path::findImprovment(int i) {
-               double oldcost= getcost();
-               bool improved=false;
-               std::cout<<"\nWorking with ("<<i<<")\n";
-               if (isdepot(i)) {
-                    std::cout<<"Node is depot\n";
-                    return false;}
-               for (int j=i+1; j<path.size(); j++) {
-                   std::cout<<"\nWorking with ("<<i<<","<<j<<") ";
-                   if (ispickup(i) and isdelivery(j) and sameorder(i,j)) {  //poner dentro del for
-                           std::cout<<"Node"<<i<<" is pickup and Node"<<j<<" is delivery from the same order \n";
-                           return false;} //getting out from the j loop (pickup caatched up with delivery)
-                   else {
-                       swapnodes(i,j);
-                       std::cout<<"costs (new,old) ("<<getcost()<<","<<oldcost<<")\n";
-                       if (getcost()<oldcost) { return true;  //path has being improved
-                              std::cout<<"New cost is better\n";}
-                       else { swap(i,j);
-                              std::cout<<"costs (old,restored) ("<<oldcost<<","<<getcost()<<")\n";
-                            }
-                   }
-                }
-              return false;
-      }
-   
-
-      void Path::hillClimbOpt() {
-           double original=getcost();
-           double oldcost;
-           std::cout<<"\nHILL\n";
-           int i=0;
-           while (i<path.size()-1) {
-              if (!findImprovment(i)) i++;
-              else i=0;
-           }
-           /*
-           for (int i=0;  i<path.size()-1; i++) {
-              findImprovment(i)
-               std::cout<<"\nWorking with ("<<i<<")\n";
-                 if (isdepot(i)) {
-                    std::cout<<"Node is depot\n";
-                    continue;}
-               oldcost= getcost();
-               improved=false;
-               for (int j=i+1; j<path.size() and !improved; j++) {
-                   std::cout<<"\nWorking with ("<<i<<","<<j<<") ";
-                   if (ispickup(i) and isdelivery(j) and sameorder(i,j)) {  //poner dentro del for
-                           std::cout<<"Node"<<i<<" is pickup and Node"<<j<<" is delivery from the same order \n";
-			   j=path.size();} //getting out from the j loop (pickup caatched up with delivery)
-                   else {
-                       swapnodes(i,j); 
-                       std::cout<<"costs (new,old) ("<<getcost()<<","<<oldcost<<")\n";
-                       if (getcost()<oldcost) {improved=true;  //geting out of the j loop (path has being improved
-                              std::cout<<"New cost is better\n";}
-                       else { swap(i,j);
-                              std::cout<<"costs (old,restored) ("<<oldcost<<","<<getcost()<<")\n";
-                            }                  
-                   }
-               }*/
-            
-      }
-
 
 
 void Path::dump() {
