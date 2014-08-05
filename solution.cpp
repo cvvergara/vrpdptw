@@ -19,6 +19,22 @@ void Solution::dumbConstruction() {
     dumbroute.dump();
     R.push_back(dumbroute);
 };
+
+void Solution::dumbConstructionAndBestMoveForward() {
+    Route dumbroute(P);
+    int bestI;
+    int bestJ;
+        for (int i=0; i<P.getOrderCount(); i++) {
+           dumbroute.addOrder(P.getOrder(i));
+        }
+    dumbroute.dumppath();
+    dumbroute.findBetterForward(bestI, bestJ);
+std::cout<<"best I"<<bestI<<", best J"<<bestJ<<"\n";
+    dumbroute.move(bestI,bestJ);
+    dumbroute.dumppath();
+    
+    R.push_back(dumbroute);
+};
      
 void Solution::withSortedOrdersConstruction() {
     P.sortOrdersbyDist();
@@ -48,7 +64,6 @@ void Solution::deliveryBeforePickupConstruction() {
 
 void Solution::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
-    int M = 0;
     R.clear();
     Order order;
     std::deque<Order> unOrders;

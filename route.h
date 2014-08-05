@@ -68,6 +68,9 @@ class Route {
     void removeOrder(const Order &o);
     void removeOrder(const int oid);
 
+    void move(int fromi,int toj);
+    int findForwardImprovment(const int i,double &bestcost);
+    void findBetterForward(int &bestI, int &bestJ);
     void swapnodes(int i,int j) { routePath.swapnodes(i,j);}
     void swap(int i,int j) { routePath.swap(i,j);}
     bool ispickup(int i) {return routePath.ispickup(i);}
@@ -82,6 +85,8 @@ class Route {
     void addOrder(const Order &o);
     void addPickup(const Order &o);
     void addDelivery(const Order &o);
+    void insertPickup(const Order &o, const int at);
+    void remove(const int at);
     bool findImprovment(int i);
     void hillClimbOpt();
 //    void smalldump();

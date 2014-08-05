@@ -31,6 +31,7 @@ class Solution {
     void dumproutes();
 
     void dumbConstruction();
+    void dumbConstructionAndBestMoveForward();
     void withSortedOrdersConstruction();
     void dumbAndHillConstruction();
     void deliveryBeforePickupConstruction();

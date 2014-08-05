@@ -43,22 +43,24 @@
           if (!path.empty()) path.erase(path.begin()+at);
     }
  
+    double Path::getcost(double w1,double w2,double w3) { 
+        setvalues(0);
+        return   w1*D + w2*TWV + w3*CV;
+    }
+
 
     void Path::push_back(pathNode pathstop) {
           path.push_back(pathstop);
-          setvalues(0);
+//          setvalues(0);
 /*         if (path.size()==0) pathstop.setValues(*depot);
          else pathstop.setValues(path.back());
          path.push_back(pathstop);
          setDepotValues();*/
     }
 
-    void Path::emplace(pathNode pathstop,int at) {
-/*         pathNode &prev= (at==0)? depot: path[at];        
-         pathstop.setValues(prev);
+    void Path::insert(pathNode pathstop,int at) {
          path.insert(path.begin()+at,pathstop);
-         setvalues(at);
-*/    }
+    }
 
     void Path::setvalues(int at){
          if (at<path.size()) {
@@ -70,7 +72,18 @@
          };
      }
 
-     
+
+    void Path::move(int fromi,int toj) {
+              //some checking migh go in route level
+              if (fromi<toj){
+                  insert(path[fromi],toj+1);
+                  remove(fromi);
+              }
+               else {
+                  insert(path[fromi],toj);
+                  remove(fromi+1);
+              }
+    }
 
      void Path::swapnodes(int i,int j){
           if(i>j)  std::cout<<"This is a restrictive swap, requierment: i<j\n";  
@@ -79,8 +92,8 @@
               pathNode temp(path[i]);
               path[i]=path[j];
               path[j]=temp;
-              setvalues(i); //update values starting from i
-              setvalues(0);
+  //            setvalues(i); //update values starting from i
+  //            setvalues(0);
           }
      }
 
@@ -88,9 +101,9 @@
           pathNode temp(path[i]);
           path[i]=path[j];
           path[j]=temp;
-          if (i<j) setvalues(i);
-          else setvalues(j);
-          setvalues(0);
+    //      if (i<j) setvalues(i);
+    //      else setvalues(j);
+    //      setvalues(0);
      }
                  
 
@@ -107,11 +120,7 @@
 
 
 void Path::dump() {
-    std::cout << "D="<<D << ", "
-              << "TWV="<<TWV << ", "
-              << "CV=" <<CV<< ", ";
-    if(twv_depot) std::cout<<"depot: has twv ";
-    if(cv_depot) std::cout<<"depot: has cv ";
+    setvalues(0);
      for (int i=0;i<path.size();i++){
           std::cout<<"\npath stop #:"<<i<<"\n";
           path[i].dump();
@@ -121,10 +130,16 @@ void Path::dump() {
 
 
 void Path::smalldump() {
+    setvalues(0);
+    std::cout << "D="<<D << ", "
+              << "TWV="<<TWV << ", "
+              << "CV=" <<CV<< ", ";
+    if(twv_depot) std::cout<<"depot: has twv ";
+    if(cv_depot) std::cout<<"depot: has cv ";
     std::cout << "\nPath(nid,oid): [";
     for (int i=0; i<path.size(); i++) {
         if (i) std::cout << ", ";
-        std::cout << "("<<getnid(i)<<","<<getoid(i)<<")";
+        std::cout << "#"<<i<<"("<<getnid(i)<<","<<getoid(i)<<")";
     }
     std::cout << "]\n";
 }

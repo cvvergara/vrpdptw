@@ -20,7 +20,7 @@ private:
 
 
 
-int setOrder(int i_oid, /*int i_pid, int i_did,*/ double i_dist, double i_dist2, bool i_asigned){
+int setOrder(int i_oid, /*int i_pid, int i_did,*/ double i_dist, double i_dist2,bool i_asigned){
     oid=i_oid;
 //    pid=i_pid;
 //    did=i_did;

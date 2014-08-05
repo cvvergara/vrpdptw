@@ -228,6 +228,21 @@ void Route::removeOrder(const int oid) {
     routePath.removeOrder(oid);
 }
 
+void Route::move(int fromi,int toj) {
+   //checks are missing for valid moves
+   routePath.move(fromi,toj);
+}
+
+
+void  Route::insertPickup(const Order &o, const int at) {
+    pathNode pickup(*o.pickup);
+    routePath.insert(pickup,at);
+}
+
+void  Route::remove(const int at) {
+    routePath.remove(at);
+}
+
 void  Route::addPickup(const Order &o) {
     pathNode pickup(*o.pickup);
     routePath.push_back(pickup);
@@ -238,6 +253,38 @@ void Route::addDelivery(const Order &o) {
     pathNode delivery(*o.delivery);
     routePath.push_back(delivery);
 }
+
+int Route::findForwardImprovment(const int i,double &bestcost) {
+           bool improved=false;
+           int bestJ=-1;
+           if (isdepot(i)) return -1;
+           for (int j=i+1; j<routePath.size() and !(ispickup(i) and isdelivery(j) and sameorder(i,j)); j++) {
+                  move(i,j);
+                  if (getcost()<bestcost){
+                             bestcost=getcost();
+                             bestJ=j;
+                  }
+                  move(j,i);
+           }
+           return  bestJ;
+}
+
+
+void Route::findBetterForward(int &bestI, int &bestJ) {
+           double bestcost=getcost();
+           int j=-1;
+           for (int i=1;i<routePath.size()-1;i++) { //not even bothering with the depot
+              j=-1;
+              j=findForwardImprovment(i,bestcost); 
+              if (j>0) { //a better cost was found
+                    bestI=i;
+                    bestJ=j;
+             }
+           }
+}
+
+
+
 
 bool Route::findImprovment(int i) {
            double oldcost= getcost();
@@ -257,7 +304,8 @@ void Route::hillClimbOpt() {
            int i=0;
            while (i<routePath.size()-1) {
               if (!findImprovment(i)) i++;
-              else i=0;
+              else 
+                 i=0;
            }
 }
 
