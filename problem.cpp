@@ -10,7 +10,7 @@
 
 bool sortByDist(Order a, Order b)
 {
-    return a.getdistPickupDepot() > b.getdistPickupDepot();
+    return a.getdistPickupDepot() < b.getdistPickupDepot();
 }
 
 bool sortByDistReverse(Order a, Order b)
@@ -200,8 +200,6 @@ void Problem::loadProblem(char *infile)
             depot=node;
         }
     }
-std::cout<<"\ndepot-";
-depot.dump();
 
     in.close();
 

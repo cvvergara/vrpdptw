@@ -31,7 +31,6 @@ void fillOrder(Node &p, Node &d , int i_oid, const Node depot){
       pickup->setdist(depot);
       delivery->setdist(depot);
       asigned=false;
-dump();
 }
 
 

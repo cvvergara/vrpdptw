@@ -96,7 +96,6 @@ ppos, dpos = pickup postition, delivery postition
 */
 
 void Solution::initialFeasableSolution() {
-     std::cout << "Enter Problem::initialFeasableSolution\n";
     int bppos, bdpos;
     int ppos, dpos;
     double actualcost, bestcost;
@@ -104,13 +103,10 @@ void Solution::initialFeasableSolution() {
     Order order;
     std::deque<Order> unOrders;
     std::deque<Order> waitOrders;
-    P.sortOrdersbyDist();
-    //P.sortOrdersbyDistReverse();
-     std::cout << "Enter Problem::initialFeasableSolution\n";
+    P.sortOrdersbyDistReverse();
     unOrders=P.O;
     while (!unOrders.empty()) {
        Route route(P);
-       std::cout<<"\n\n*******1 original orders"<<P.O.size()<<" wait orders "<< waitOrders.size()<<" unassigned Orders "<<unOrders.size()<<"\n";
        while (!unOrders.empty()) {
          order=unOrders.front();
           unOrders.pop_front();
@@ -131,7 +127,6 @@ void Solution::initialFeasableSolution() {
           }
        }      
        R.push_back(route);
-     //  route.dumppath();
        unOrders=waitOrders;
        waitOrders.clear();
      }
@@ -241,18 +236,15 @@ void Solution::dumproutes() {
     }
 }
 
+
 void Solution::dump() {
     computeCosts();
     std::cout << "Solution: totalDistance: " << totalDistance
               << ", totalCost: " << totalCost
               << std::endl;
-    dumproutes();
-//    std::cout << "mapOtoR: ";
-//    for (int i=0; i<mapOtoR.size(); i++) {
-//        if (i) std::cout << ", ";
-//        std::cout << mapOtoR[i];
-//    }
-//    std::cout << std::endl;
+    for (int i=0; i<R.size(); i++) {
+        R[i].dumppath();
+    }
 }
 
 
