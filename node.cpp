@@ -12,7 +12,9 @@ Node::Node(std::string line) {
         buffer >> service;
         buffer >> pid;
         buffer >> did;
+        if (nid==0) dist=0;
         oid =-1;
+        order=NULL;
 }
 
 bool Node::checkIntegrity(int nodesCant) {
@@ -37,6 +39,7 @@ void Node::dump()const {
     std::cout << nid << ", "
               << x << ", "
               << y << ", "
+              << dist<<", "
               << demand << ", "
               << tw_open << ", "
               << tw_close << ", "

@@ -10,12 +10,12 @@
 
 bool sortByDist(Order a, Order b)
 {
-    return a.dist > b.dist;
+    return a.getdistPickupDepot() > b.getdistPickupDepot();
 }
 
 bool sortByDistReverse(Order a, Order b)
 {
-    return a.dist < b.dist;
+    return a.getdistPickupDepot() > b.getdistPickupDepot();
 }
 
 // Class functions

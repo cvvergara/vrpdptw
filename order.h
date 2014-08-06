@@ -9,26 +9,14 @@ private:
    
   public:
     int oid;        // order id
-//    int pid;        // pickup node id
-//    int did;        // delivery node id
-    int routeId;      // routID
-    double dist;    // distance from depot to pickup location
-    double dist2;   // distance from delivery to depot
-    bool asigned;   // distance from delivery to depot
+    int rid;
+//    double dist;    // distance from depot to pickup location  can be calculated
+//    double dist2;   // distance from delivery to depot
+    bool asigned;   
     Node *pickup;
     Node *delivery;
 
 
-
-int setOrder(int i_oid, /*int i_pid, int i_did,*/ double i_dist, double i_dist2,bool i_asigned){
-    oid=i_oid;
-//    pid=i_pid;
-//    did=i_did;
-    dist=i_dist;
-    dist2=i_dist2;
-    asigned=i_asigned;
-    return oid;
-};
 
 Order(Node &p, Node &d , int i_oid, const Node depot){ 
       fillOrder(p,d,i_oid,depot);
@@ -36,60 +24,53 @@ Order(Node &p, Node &d , int i_oid, const Node depot){
 
 void fillOrder(Node &p, Node &d , int i_oid, const Node depot){ 
       oid=i_oid;
-//      pid=p.getnid();
-//      did=d.getnid();
       pickup=&p;
       delivery=&d;
-      pickup->setoid(i_oid);
+      pickup->setoid(i_oid);  //tell pickup and delivery they belong to the order
       delivery->setoid(i_oid);
-      dist=pickup->distance(depot);
-      dist2=delivery->distance(depot);
+      pickup->setdist(depot);
+      delivery->setdist(depot);
       asigned=false;
+dump();
 }
+
+
 
 Order(const Order& other){
-            pickup=other.pickup;
-            delivery=other.delivery;
-
-         setOrder(other.oid,/*other.pid,other.did,*/other.dist,other.dist2,other.asigned);
+      oid=other.oid;
+      rid=other.rid;
+      asigned=other.asigned;
+      pickup=other.pickup;
+      delivery=other.delivery;
 };
 
-Order(){
+Order(){ 
+         oid=-1;
+         rid=-1;
+         asigned=false;
          pickup=NULL;
          delivery=NULL;
-         setOrder(-1,/*-1,-1,*/0,0,false);
 }
-    // ~Order() {};
-/*
-Order& operator=(const Order& other) {
-            pickup=other.pickup;
-            delivery=other.delivery;
-            pickupPtr=other.pickupPtr;
-            deliveryPtr=other.deliveryPtr;
-std::cout<<"pickup node in asigment";
-pickupPtr->dump();
-         setOrder(other.oid,other.pid,other.did,other.dist,other.dist2,other.asigned);
-         return *this;
-}
-*/
-bool isUnasigned() const { return !asigned;}
-bool isAsigned()   const { return asigned;}
+
+/*************accesosrs*/
 int getpid() const {return pickup->getpid();}
 int getdid() const {return delivery->getdid();}
+int getoid() const {return oid;};int getrid() const {return rid;};
 
-
-
-    int getoid() const;
-//    int getpid() const;
-    int getRoute();
-//    int getdid() const;
-    bool checkIntegrity(int nodesCant);
-    double getDistFromPickup();
-    double getDistFromDelivery();
-    void  moveOrder(int toRoute);
-
-
-    void dump();
+double getdistPickupDepot() const {return pickup->getdist();};
+double getdistDeliveryDepot() const {return delivery->getdist();};
+double getdistPickupOther(const Node other) const {return pickup->distance(other);};
+double getdistDeliveryOther(const Node other) const {return pickup->distance(other);};
+double getdistPickDeliver() const {return pickup->distance(*delivery);};
+/************state*/
+bool isUnasigned() const { return !asigned;}
+bool isAsigned()   const { return asigned;}
+bool checkIntegrity(const int nodesCant) const;
+/************ mutators*/
+void  moveOrder(const int toRoute);
+/************ output */
+void shortdump() const;
+void dump() const;
 };
 
 #endif

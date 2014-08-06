@@ -149,7 +149,7 @@ void Path::smalldump() {
     std::cout << "\nPath(nid,oid): [";
     for (int i=0; i<path.size(); i++) {
         if (i) std::cout << ", ";
-        std::cout << "#"<<i<<"("<<getnid(i)<<","<<getoid(i)<<")";
+        std::cout << "("<<getnid(i)<<","<<getoid(i)<<")";
     }
     std::cout << "]\n";
 }

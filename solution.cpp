@@ -105,12 +105,14 @@ void Solution::initialFeasableSolution() {
     std::deque<Order> unOrders;
     std::deque<Order> waitOrders;
     P.sortOrdersbyDist();
+    //P.sortOrdersbyDistReverse();
+     std::cout << "Enter Problem::initialFeasableSolution\n";
     unOrders=P.O;
     while (!unOrders.empty()) {
        Route route(P);
        std::cout<<"\n\n*******1 original orders"<<P.O.size()<<" wait orders "<< waitOrders.size()<<" unassigned Orders "<<unOrders.size()<<"\n";
        while (!unOrders.empty()) {
-          order=unOrders.front();
+         order=unOrders.front();
           unOrders.pop_front();
           route.addOrder(order);
           ppos=bppos=route.getppos(order.oid);
@@ -129,11 +131,11 @@ void Solution::initialFeasableSolution() {
           }
        }      
        R.push_back(route);
-       route.dumppath();
+     //  route.dumppath();
        unOrders=waitOrders;
        waitOrders.clear();
      }
-     //dump();
+     dump();
 }
 
 
