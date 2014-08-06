@@ -228,12 +228,23 @@ double Solution::getDistance() {
 }
 
 
-void Solution::dumproutes() {
+
+
+void Solution::tau() {
+    std::cout<< "\nTau:" << std::endl;
+    for (int i=0; i<R.size(); i++) {
+        if (i) std::cout<< ",";
+        R[i].tau();
+    };
+    std::cout<<"0\n";
+}
+void Solution::dumproutes()  {
     std::cout<< "\nRoutes:" << std::endl;
     for (int i=0; i<R.size(); i++) {
         std::cout<<"\n -----> Route#"<<i<<"\n";
         R[i].dump();
     }
+    tau();
 }
 
 
@@ -242,6 +253,7 @@ void Solution::dump() {
     std::cout << "Solution: totalDistance: " << totalDistance
               << ", totalCost: " << totalCost
               << std::endl;
+    tau();
     for (int i=0; i<R.size(); i++) {
         R[i].dumppath();
     }

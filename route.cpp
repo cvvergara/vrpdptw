@@ -386,6 +386,10 @@ void Route::dump() {
     routePath.dump();
 }
 
+void Route::tau() {
+    for (int i=0; i< routePath.size(); i++)
+       std::cout<<routePath.getnid(i)<<" , ";
+}
 
 void Route::dumppath() {
     routePath.smalldump();

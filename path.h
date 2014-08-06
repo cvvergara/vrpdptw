@@ -62,15 +62,15 @@ class Path{
     void insert(pathNode pathstop,int at);
     void setvalues(int at);
     void setDepotValues();
-    void dump();
+    void dump() ;
     void smalldump();
     bool ispickup(int i) {return path[i].ispickup();}
     bool isdelivery(int i) {return path[i].isdelivery();}
     bool isdepot(int i) {return path[i].isdepot();}
     bool sameorder(int i,int j){return path[i].sameorder(path[j]);}
     bool feasable() { return TWV == 0 and CV == 0;}
-    bool hascv() { return CV != 0;}
-    bool hastwv() { return TWV != 0;}
+    bool hascv()const { return CV != 0;}
+    bool hastwv()const { return TWV != 0;}
     double getcost(double w1,double w2,double w3);// { return   w1*D + w2*TWV + w3*CV; }
 
 

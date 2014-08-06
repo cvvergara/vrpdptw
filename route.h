@@ -97,6 +97,7 @@ class Route {
 //    void smalldump();
     void dumppath();
     void dump();
+    void tau() ;
 
  void addNode(pathNode &node) {
 

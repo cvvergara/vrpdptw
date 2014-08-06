@@ -129,7 +129,7 @@
       }
 
 
-void Path::dump() {
+void Path::dump()  {
     setvalues(0);
      for (int i=0;i<path.size();i++){
           std::cout<<"\npath stop #:"<<i<<"\n";
