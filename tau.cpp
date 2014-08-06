@@ -1,5 +1,5 @@
 #include "route.h"
-#include "solution.h"
+#include "tau.h"
 
 // NON class functions for sorting
 bool sortByOid(Order a, Order b)
@@ -10,7 +10,7 @@ bool sortByOid(Order a, Order b)
 // Class functions
 
 /*
-void Solution::dumbConstruction() {
+void Tau::dumbConstruction() {
     Route dumbroute(P);
     P.sortOrdersbyDistReverse();
         for (int i=0; i<P.getOrderCount(); i++) {
@@ -20,7 +20,7 @@ void Solution::dumbConstruction() {
     R.push_back(dumbroute);
 };
 
-void Solution::dumbConstructionAndBestMoveForward() {
+void Tau::dumbConstructionAndBestMoveForward() {
     Route dumbroute(P);
     int bestI;
     int bestJ;
@@ -36,12 +36,12 @@ std::cout<<"best I"<<bestI<<", best J"<<bestJ<<"\n";
     R.push_back(dumbroute);
 };
      
-void Solution::withSortedOrdersConstruction() {
+void Tau::withSortedOrdersConstruction() {
     P.sortOrdersbyDist();
     dumbConstruction();
 };
 
-void Solution::dumbAndHillConstruction() {
+void Tau::dumbAndHillConstruction() {
     Route dumbroute(P);
     P.sortOrdersbyDistReverse();
         for (int i=0; i<P.getOrderCount(); i++) {
@@ -52,7 +52,7 @@ void Solution::dumbAndHillConstruction() {
     R.push_back(dumbroute);
 };
 
-void Solution::deliveryBeforePickupConstruction() {
+void Tau::deliveryBeforePickupConstruction() {
     Route dumbroute(P);
         for (int i=0; i<P.getOrderCount(); i++) {
            dumbroute.addDelivery(P.getOrder(i));
@@ -62,7 +62,7 @@ void Solution::deliveryBeforePickupConstruction() {
     R.push_back(dumbroute);
 };
 
-void Solution::sequentialConstruction() {
+void Tau::sequentialConstruction() {
     // std::cout << "Enter Problem::sequentialConstruction\n";
     R.clear();
     Order order;
@@ -95,7 +95,46 @@ bppos, bdpos = best pickup postition, best delivery postition
 ppos, dpos = pickup postition, delivery postition
 */
 
-void Solution::initialFeasableSolution() {
+void Tau::initialByOrderSolution() {
+/*    int bppos, bdpos;
+    int ppos, dpos;
+    double actualcost, bestcost;
+    R.clear();
+    Order order;
+    std::deque<Order> unOrders;
+    std::deque<Order> waitOrders;
+    P.sortOrdersbyDistReverse();
+    unOrders=P.O;
+    while (!unOrders.empty()) {
+       Route route(P);
+       while (!unOrders.empty()) {
+         order=unOrders.front();
+          unOrders.pop_front();
+          route.addOrder(order);
+          ppos=bppos=route.getppos(order.oid);
+          dpos=bdpos=route.getdpos(order.oid);
+          actualcost=getcost();
+          bestcost=route.findBestCostBackForw(order.oid,bppos,bdpos); //can it come back with already tested for feasability
+          if (bestcost<actualcost) {     //found a better place
+             if (bppos<bdpos) {
+                 route.move(ppos,bppos);
+                 route.move(dpos,bdpos);
+             }
+          }
+          if (!route.feasable() ) {
+                route.removeOrder(order);
+                waitOrders.push_back(order);
+          }
+       }
+       R.push_back(route);
+       unOrders=waitOrders;
+       waitOrders.clear();
+     }
+     dump();*/
+}
+
+
+void Tau::initialFeasableSolution() {
     int bppos, bdpos;
     int ppos, dpos;
     double actualcost, bestcost;
@@ -176,7 +215,7 @@ void Solution::initialFeasableSolution() {
 
 
 
-void Solution::initialNoHillConstruction() {
+void Tau::initialNoHillConstruction() {
         for (int i=0; i<P.getOrderCount(); i++) {
            Route dumbroute(P);
            dumbroute.addOrder(P.getOrder(i));
@@ -185,7 +224,7 @@ void Solution::initialNoHillConstruction() {
     dumproutes();
 };
 
-void Solution::initialConstruction() {
+void Tau::initialConstruction() {
     int M = 0;
     R.clear();
 
@@ -208,7 +247,7 @@ void Solution::initialConstruction() {
 }
 */
 
-void Solution::computeCosts() {
+void Tau::computeCosts() {
     totalCost = 0.0;
     totalDistance = 0.0;
     for (int i=0; i<R.size(); i++) {
@@ -217,12 +256,12 @@ void Solution::computeCosts() {
     }
 }
 
-double Solution::getcost() {
+double Tau::getcost() {
     computeCosts();    // somewhere in the code the getcost returns 0 because the cost hant been computed
     return totalCost;
 }
 
-double Solution::getDistance() {
+double Tau::getDistance() {
     computeCosts();
     return totalDistance;
 }
@@ -230,7 +269,7 @@ double Solution::getDistance() {
 
 
 
-void Solution::tau() {
+void Tau::tau() {
     std::cout<< "\nTau:" << std::endl;
     for (int i=0; i<R.size(); i++) {
         if (i) std::cout<< ",";
@@ -238,7 +277,7 @@ void Solution::tau() {
     };
     std::cout<<"0\n";
 }
-void Solution::dumproutes()  {
+void Tau::dumproutes()  {
     std::cout<< "\nRoutes:" << std::endl;
     for (int i=0; i<R.size(); i++) {
         std::cout<<"\n -----> Route#"<<i<<"\n";
@@ -248,7 +287,7 @@ void Solution::dumproutes()  {
 }
 
 
-void Solution::dump() {
+void Tau::dump() {
     computeCosts();
     std::cout << "Solution: totalDistance: " << totalDistance
               << ", totalCost: " << totalCost
@@ -260,7 +299,7 @@ void Solution::dump() {
 }
 
 
-double Solution::getAverageRouteDurationLength() {
+double Tau::getAverageRouteDurationLength() {
     double len = 0.0;
     int n = 0;
     for (int i=0; i<R.size(); i++) {

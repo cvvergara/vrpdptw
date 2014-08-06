@@ -9,12 +9,10 @@
 
 const double EPSILON = 0.001;
 
-class Solution {
+class Tau {
   public:
     Problem P;
     std::vector<Route> R;
-    //std::vector<path> R; 
-    //std::vector<int> mapOtoR;
     double totalDistance;
     double totalCost;
 
@@ -22,10 +20,6 @@ class Solution {
         totalDistance = 0;
         P=p;
         totalCost = 0;
-   //     mapOtoR.clear();
-   //     mapOtoR.resize(P.O.size());
-   //     for (int i=0; i<P.O.size(); i++) mapOtoR[i] = -1;
- //P.dump();
         R.clear();
     };
 
@@ -33,9 +27,10 @@ class Solution {
     void dumproutes();
     void tau() ;
 
-//    void dumbConstruction();
+//    void insertByOrderSolution()
+//dumbConstruction();
 //    void dumbConstructionAndBestMoveForward();
-    void withSortedOrdersConstruction();
+    void initialByOrderSolution();
 //    void dumbAndHillConstruction();
 //    void deliveryBeforePickupConstruction();
 //    void sequentialConstruction();
@@ -52,7 +47,7 @@ class Solution {
 
     double getAverageRouteDurationLength();
 
-    Solution& operator=( const Solution& rhs ) {
+    Tau& operator=( const Tau& rhs ) {
         if ( this != &rhs ) {
             totalDistance = rhs.totalDistance;
             totalCost = rhs.totalCost;
@@ -63,12 +58,12 @@ class Solution {
         return *this;
     };
 
-    bool operator == (Solution &another) const {
+    bool operator == (Tau &another) const {
         return R.size() == another.R.size() &&
                abs(totalCost - another.totalCost) < EPSILON;
     };
 
-   bool solutionEquivalent (Solution &another)  {
+   bool solutionEquivalent (Tau &another)  {
         computeCosts();
         another.computeCosts();
         return R.size() == another.R.size() &&
@@ -76,11 +71,9 @@ class Solution {
 
     };
 
-    bool operator <  (Solution &another) const {
+    bool operator <  (Tau &another) const {
         return R.size() < another.R.size() || totalCost < another.totalCost;
     };
-
-
 };
 
 #endif
