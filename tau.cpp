@@ -289,8 +289,8 @@ void Tau::plotTau(){
     lcolor.push_back(lcolor[0]);
     label.push_back(label[0]);
 
-    Plot P(x,y,pcolor,lcolor,label);
-
+    Plot graph(x,y,pcolor,lcolor,label);
+    graph.plot(false);
 }
 
 
