@@ -1,3 +1,4 @@
+#include "plot.h"
 #include "route.h"
 #include "tau.h"
 
@@ -170,6 +171,7 @@ void Tau::initialFeasableSolution() {
        waitOrders.clear();
      }
      dump();
+     plotTau();
 }
 
 
@@ -267,12 +269,34 @@ double Tau::getDistance() {
 }
 
 
+void Tau::plotTau(){
+    std::vector<double> x;
+    std::vector<double> y;
+    std::vector<int> label;
+    std::vector<int> pcolor;
+    std::vector<int> lcolor;
+    int basecolor=0x444444;
+    for (int i=0; i<R.size(); i++) {
+        R[i].plotTau(x,y,label,pcolor);
+        for (int j=0; j<x.size(); j++) {
+            if (label[j]==0) basecolor+=1000;
+            lcolor.push_back(basecolor);
+        }
+    }
+    x.push_back(x[0]);
+    y.push_back(y[0]);
+    pcolor.push_back(pcolor[0]);
+    lcolor.push_back(lcolor[0]);
+    label.push_back(label[0]);
+
+    Plot P(x,y,pcolor,lcolor,label);
+
+}
 
 
 void Tau::tau() {
     std::cout<< "\nTau:" << std::endl;
     for (int i=0; i<R.size(); i++) {
-        if (i) std::cout<< ",";
         R[i].tau();
     };
     std::cout<<"0\n";

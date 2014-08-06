@@ -41,6 +41,7 @@ int Route::nodeDemand(int pathstop) const {
     return P.nodeDemand(path[pathstop]);
 }
 
+
 int Route::nodeServiceTime(int pathstop) const {
     return P.nodeServiceTime(path[pathstop]);
 }
@@ -390,6 +391,20 @@ void Route::tau() {
     for (int i=0; i< routePath.size(); i++)
        std::cout<<routePath.getnid(i)<<" , ";
 }
+
+void Route::plotTau(std::vector<double> &x, std::vector<double> &y,std::vector<int> &label,std::vector<int> &color) {
+    for (int i=0; i< routePath.size(); i++) {
+       x.push_back(routePath.getx(i));
+       y.push_back(routePath.gety(i));
+       label.push_back(routePath.getnid(i));
+       if (isdepot(i)) color.push_back(0xff0000);
+       else if (isdepot(i)) color.push_back(0x00ff00);
+       else color.push_back(0x0000ff);
+    }
+}
+
+
+
 
 void Route::dumppath() {
     routePath.smalldump();

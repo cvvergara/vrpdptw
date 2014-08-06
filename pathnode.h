@@ -34,6 +34,8 @@ static const double cargoLimit=100; //need to set this data
     bool sameorder(pathNode &n) const {return node->sameorder(n.getnode());}
     int getnid() const {return node->getnid();}
     int getoid() const {return node->getoid();}
+    double getx() const {return node->getx();}
+    double gety() const {return node->gety();}
 
     
 

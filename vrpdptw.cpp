@@ -12,9 +12,9 @@
 #include "order.h"
 #include "problem.h"
 #include "route.h"
-#include "solution.h"
+#include "tau.h"
 #include "plot.h"
-#include "tabusearch.h"
+//#include "tabusearch.h"
 
 
 // create a static global variable for the problem
@@ -42,7 +42,7 @@ int main (int argc, char **argv)
         P.loadProblem(infile);
         std::cout << "Problem '" << infile << "'loaded\n";
         P.dump();
-        Solution S(P);
+        Tau S(P);
         std::cout << "\n\n\n******************************Solution: initialFeasableSolution \n";
         S.initialFeasableSolution();
 /*

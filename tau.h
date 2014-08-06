@@ -16,7 +16,7 @@ class Tau {
     double totalDistance;
     double totalCost;
 
-    Solution(Problem& p): P(p) {
+    Tau(Problem& p): P(p) {
         totalDistance = 0;
         P=p;
         totalCost = 0;
@@ -26,6 +26,7 @@ class Tau {
     void dump();
     void dumproutes();
     void tau() ;
+    void plotTau();
 
 //    void insertByOrderSolution()
 //dumbConstruction();

@@ -47,8 +47,10 @@ class Path{
     ~Path() {};
 
     int size() {return path.size();};
-    int getnid(int i) { return path[i].getnid(); };
-    int  getoid(int i) { return path[i].getoid(); };
+    double getx(const int i) const { return path[i].getx(); };
+    double gety(const int i) const { return path[i].gety(); };
+    int getnid(int i) const { return path[i].getnid(); };
+    int  getoid(int i) const { return path[i].getoid(); };
     int getdpos(const int oid) const;
     int getppos(const int oid) const;
     void remove(int at);

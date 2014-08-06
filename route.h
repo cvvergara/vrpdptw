@@ -48,8 +48,11 @@ class Route {
 
     Route &operator = (const Route &r) { P = r.P; return *this; };
 
-    int getnid(int i) { return routePath.getnid(i); }
-    int getoid(int i) { return routePath.getoid(i); }
+    int getnid(int i) const { return routePath.getnid(i); }
+    int getoid(int i) const { return routePath.getoid(i); }
+    double getx(const int i) const {routePath.getx(i);}
+    double gety(const int i) const {routePath.gety(i);}
+
     int getppos (const int oid) const;
     int getdpos (const int oid) const;
 
@@ -98,6 +101,7 @@ class Route {
     void dumppath();
     void dump();
     void tau() ;
+    void plotTau(std::vector<double> &x, std::vector<double> &y,std::vector<int> &label,std::vector<int> &color);
 
  void addNode(pathNode &node) {
 
