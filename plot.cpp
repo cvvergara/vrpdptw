@@ -32,12 +32,13 @@ int Plot::plot(bool labelNodes) {
     }
 
     gdImageSetThickness(im, 1);
-    gdImageSetAntiAliased(im, gdImageColorExactAlpha(im, 0, 0, 0, 0));
+    //gdImageSetAntiAliased(im, gdImageColorExactAlpha(im, 0, 0, 0, 0));
 
     // draw the lines for the routes
     for (int i=0; i<size-1; i++) {
-        gdImageLine(im, scalex(x[i]), scaley(y[i]),scalex(x[i]), scaley(y[i]), gdAntiAliased);
-        gdImageLine(im, scalex(x[i]), scaley(y[i]),scalex(x[i]), scaley(y[i]), lineclr[i]);
+        gdImageSetAntiAliased(im, gdImageColorExactAlpha(im, lineclr[i], lineclr[i]*5, lineclr[i]*10, 0));
+        gdImageLine(im, scalex(x[i]), scaley(y[i]),scalex(x[i+1]), scaley(y[i+1]), gdAntiAliased);
+        //gdImageLine(im, scalex(x[i]), scaley(y[i]),scalex(x[i]), scaley(y[i]), lineclr[i]);
     }
 
     // draw the nodes RED for depot, Grreen for pickup Blue for delivery

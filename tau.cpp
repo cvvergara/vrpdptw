@@ -275,11 +275,11 @@ void Tau::plotTau(){
     std::vector<int> label;
     std::vector<int> pcolor;
     std::vector<int> lcolor;
-    int basecolor=0x444444;
+    int basecolor=10;
     for (int i=0; i<R.size(); i++) {
         R[i].plotTau(x,y,label,pcolor);
         for (int j=0; j<x.size(); j++) {
-            if (label[j]==0) basecolor+=1000;
+            if (label[j]==0) basecolor+=10;
             lcolor.push_back(basecolor);
         }
     }

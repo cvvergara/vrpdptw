@@ -54,10 +54,6 @@ public:
        lineclr=lc;
        label=ilabel;
        setextents();
-    std::cout<<"\ncreation of plot\n";
-    for (int j=0; j<x.size(); j++) {
-        std::cout<<"x="<<x[j]<<",y="<<y[j]<<",pc="<<pointclr[j]<<",lc="<<lineclr[j]<<",label="<<label[j]<<"\n";
-}
     };
 
 

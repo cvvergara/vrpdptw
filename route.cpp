@@ -398,7 +398,7 @@ void Route::plotTau(std::vector<double> &x, std::vector<double> &y,std::vector<i
        y.push_back(routePath.gety(i));
        label.push_back(routePath.getnid(i));
        if (isdepot(i)) color.push_back(0xff0000);
-       else if (isdepot(i)) color.push_back(0x00ff00);
+       else if (isdelivery(i)) color.push_back(0x00ff00);
        else color.push_back(0x0000ff);
     }
 }
