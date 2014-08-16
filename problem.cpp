@@ -138,7 +138,7 @@ void Problem::ordersdump() {
 void Problem::nodesdump() {
     std::cout << "---- Nodes  --------------\n";
     for (int i=0; i<N.size(); i++)
-        N[i].dump();
+        N[i].dumpnode();
 }
 void Problem::dump() {
     std::cout << "---- Problem -------------\n";

@@ -11,16 +11,16 @@
 #include <deque>
 //#include <math.h>
 
-#include "order.h"
-#include "node.h"
-#include "pathnode.h"
-#include "problem.h"  
+//#include "order.h"
+//#include "node.h"
+#include "dpnode.h"
+//#include "problem.h"  
 //eventually problem.h wont be added herethis disapears
 
 
 class Path{
   private:
-    Node *depot;
+    Twnode depot;
 //    double w1,w2,w3;
     int rid;
     double D;      // duration
@@ -34,8 +34,8 @@ class Path{
 
 
 
-    Path (Node &d){
-         depot = &d;
+    Path (const pathNode &d){
+         depot = d;
          twv_depot=false;
          cv_depot=false;
 	 D= TWV=CV=0;
@@ -50,7 +50,7 @@ class Path{
     double getx(const int i) const { return path[i].getx(); };
     double gety(const int i) const { return path[i].gety(); };
     int getnid(int i) const { return path[i].getnid(); };
-    int  getoid(int i) const { return path[i].getoid(); };
+ //   int  getoid(int i) const { return path[i].getoid(); };
     int getdpos(const int oid) const;
     int getppos(const int oid) const;
     void remove(int at);
@@ -69,7 +69,7 @@ class Path{
     bool ispickup(int i) {return path[i].ispickup();}
     bool isdelivery(int i) {return path[i].isdelivery();}
     bool isdepot(int i) {return path[i].isdepot();}
-    bool sameorder(int i,int j){return path[i].sameorder(path[j]);}
+//    bool sameorder(int i,int j){return path[i].sameorder(path[j]);}
     bool feasable() { return TWV == 0 and CV == 0;}
     bool hascv()const { return CV != 0;}
     bool hastwv()const { return TWV != 0;}

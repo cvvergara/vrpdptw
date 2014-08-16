@@ -9,25 +9,25 @@
 #include <list>
 //#include <math.h>
 
-#include "order.h"
-#include "node.h"
+//#include "order.h"
+//#include "node.h"
 #include "pathnode.h"
 #include "path.h"
 
 
 
    int Path::getdpos(const int oid) const {
-          int i=0;
+/*          int i=0;
           while (i<path.size() and !(path[i].isdelivery() and path[i].getoid()==oid))
             i++; 
          return i;
-    }
+*/    }
    int Path::getppos(const int oid) const {
-          int i=0;
+/*          int i=0;
           while (i<path.size() and !(path[i].ispickup() and path[i].getoid()==oid))
             i++; 
          return i;
-    }
+*/    }
 
 
 
@@ -36,23 +36,22 @@
          removeDelivery(oid);
     }
 
-
     void Path::removePickup(int oid){
-          for (int i=0;i<path.size();i++) {
+/*          for (int i=0;i<path.size();i++) {
                if (path[i].ispickup() and path[i].getoid()==oid ){
                    remove(i); break; //only 1 pickup per order
                }
 
          }
-    }
+*/    }
 
     void Path::removeDelivery(int oid){
-           for (int i=0;i<path.size();i++) {
+/*           for (int i=0;i<path.size();i++) {
                if (path[i].isdelivery() and path[i].getoid()==oid ){
                    remove(i); break; //only 1 delivery per order
                }
            }
-    }      
+*/    }      
 
     void Path::remove(int at){ 
           if (!path.empty()) path.erase(path.begin()+at);
@@ -73,14 +72,14 @@
     }
 
     void Path::setvalues(int at){
-         if (at<path.size()) {
+/*         if (at<path.size()) {
               if (at==0) path[at].setValues(*depot);
               else path[at].setValues(path[at-1]);
               setvalues(at+1);
          } else {
               setDepotValues();
          };
-     }
+*/     }
 
 
     void Path::move(int fromi,int toj) {
@@ -96,7 +95,7 @@
     }
 
      void Path::swapnodes(int i,int j){
-          if(i>j)  std::cout<<"This is a restrictive swap, requierment: i<j\n";  
+/*          if(i>j)  std::cout<<"This is a restrictive swap, requierment: i<j\n";  
           else if (ispickup(i) and isdelivery(j) and sameorder(i,j)) std::cout<<"This is a restrictive swap, requierment: cant swap from the same order\n";
           else {
               pathNode temp(path[i]);
@@ -105,7 +104,7 @@
   //            setvalues(i); //update values starting from i
   //            setvalues(0);
           }
-     }
+**/     }
 
      void Path::swap(int i,int j){
           pathNode temp(path[i]);
@@ -119,8 +118,9 @@
 
      void Path::setDepotValues() {
               int at= path.size()-1;
-              D = path[at].totDistFromDepot+depot->distance(path[at].getnode());
-              twv_depot=depot->lateArrival(D);
+              //D = path[at].totDistFromDepot+depot->distance(path[at].getnode());
+              //D = path[at].totDistFromDepot+depot->distance(path[at]);
+              //wv_depot=depot->lateArrival(D);
               cv_depot=path[at].cv;
               TWV = path[at].twvTot;
               CV = path[at].cvTot;
@@ -149,7 +149,7 @@ void Path::smalldump() {
     std::cout << "\nPath(nid,oid): [";
     for (int i=0; i<path.size(); i++) {
         if (i) std::cout << ", ";
-        std::cout << "("<<getnid(i)<<","<<getoid(i)<<")";
+        std::cout << "("<<getnid(i)/*<<","<<getoid(i)<<")"*/;
     }
     std::cout << "]\n";
 }

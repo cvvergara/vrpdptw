@@ -2,9 +2,9 @@
 #define PATHNODE_H
 
 
-#include "twnode.h"
+#include "dpnode.h"
 
-class pathNode: public Twnode {
+class Dpnode: public Twnode {
 private:
     //to evaluate the vehicle at node level
     bool twv;
@@ -17,7 +17,6 @@ private:
     double totDist;;
 
 public:
-//    Node& getnode(){return *node;};
     bool ispickup() const {return hassupply();}
     bool isdepot() const {return hasdemand();}
     bool isdelivery() const {return  hasnogoods();}
@@ -37,7 +36,7 @@ public:
         totDist=0;
         }
         
-    void evaluate (const pathNode &pred,double cargoLimit){  
+    void evaluate (const Dpnode &pred,double cargoLimit){  
         distPrev=distance(pred);      //vehicle last move
         totDist=pred.gettotDist();
         twv=lateArrival(totDist);     //Time Window Violation
@@ -66,8 +65,7 @@ public:
                  <<"\n";
     };
 /***********************/     
-    void copyvalues (const pathNode &other) {
-//              node=other.node;
+    void copyvalues (const Dpnode &other) {
               twv=other.twv;
               cv=other.cv;
               twvTot=other.twvTot;
@@ -77,9 +75,9 @@ public:
               totDist=other.totDist;
              };
 
-   pathNode(){};
+   Dpnode(){};
 
-   pathNode(Twnode &n):Twnode(n) {
+   Dpnode(Twnode &n):Twnode(n) {
               twv=false;
               cv=false;
               twvTot=0;
@@ -89,14 +87,14 @@ public:
               totDist=0;
     };
     //pathNode(const pathNode &other):node(other.node) {
-    pathNode(const pathNode &other):Twnode(other) {
+    Dpnode(const Dpnode &other):Twnode(other) {
               copyvalues(other);
      };
-    pathNode& operator=(const pathNode &other) {
+    Dpnode& operator=(const Dpnode &other) {
               copyvalues(other);
      };        
 
-    ~pathNode(){};
+    ~Dpnode(){};
 };    
 
 #endif

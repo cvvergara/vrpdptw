@@ -1,43 +1,15 @@
-#ifndef PATHNODE_H
-#define PATHNODE_H
 
+#include "dpnode.h"
 
-#include "twnode.h"
-
-class pathNode: public Twnode {
-private:
-    //to evaluate the vehicle at node level
-    bool twv;
-    bool cv;
-    int twvTot;
-    int cvTot;
-    double cargo;
-    double waitTime;
-    double distPrev;
-    double totDist;;
-
-public:
-//    Node& getnode(){return *node;};
-    bool ispickup() const {return hassupply();}
-    bool isdepot() const {return hasdemand();}
-    bool isdelivery() const {return  hasnogoods();}
-
-    bool hastwv() const {return twv;}
-    bool hascv() const {return cv;}
-    int  gettwvTot() const {return twvTot;}
-    int  getcvTot() const {return cvTot;}
-    double getcargo() const {return cargo;}
-    double getdistPrev() const {return distPrev;};
-    double gettotDist() const {return totDist;};
     
-    void evaluate (double cargoLimit) {
+    void Dpnode::evaluate (double cargoLimit) {
         cargo=getdemand();
         waitTime=0;
         distPrev=0;
         totDist=0;
         }
         
-    void evaluate (const pathNode &pred,double cargoLimit){  
+    void Dpnode::evaluate (const Dpnode &pred,double cargoLimit){  
         distPrev=distance(pred);      //vehicle last move
         totDist=pred.gettotDist();
         twv=lateArrival(totDist);     //Time Window Violation
@@ -54,7 +26,7 @@ public:
 
 
 
-    void dumpeval() {
+    void Dpnode::dumpeval() {
         dump();
         std::cout<<"twv="<<twv
                  <<",cv="<<cv
@@ -65,9 +37,8 @@ public:
                  <<",totDist="<<totDist
                  <<"\n";
     };
-/***********************/     
-    void copyvalues (const pathNode &other) {
-//              node=other.node;
+
+    void Dpnode::copyvalues (const Dpnode &other) {
               twv=other.twv;
               cv=other.cv;
               twvTot=other.twvTot;
@@ -77,9 +48,8 @@ public:
               totDist=other.totDist;
              };
 
-   pathNode(){};
 
-   pathNode(Twnode &n):Twnode(n) {
+   Dpnode::Dpnode(Twnode &n):Twnode(n) {
               twv=false;
               cv=false;
               twvTot=0;
@@ -88,15 +58,4 @@ public:
               distPrev=0;
               totDist=0;
     };
-    //pathNode(const pathNode &other):node(other.node) {
-    pathNode(const pathNode &other):Twnode(other) {
-              copyvalues(other);
-     };
-    pathNode& operator=(const pathNode &other) {
-              copyvalues(other);
-     };        
 
-    ~pathNode(){};
-};    
-
-#endif

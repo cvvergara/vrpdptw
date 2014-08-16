@@ -22,12 +22,12 @@ bool Order::checkIntegrity(const int ordersCant) const {
 
 
 
-void Order::dump() const {
+void Order::debugdump() const {
     std::cout << "Order#"<<oid << ":  "
               << getpid() << ", "
-              << getdid() << ", "
-              << getdistPickupDepot() <<  ", "
-              << getdistDeliveryDepot() << std::endl;
+              << getdid() << ", ";
+//              << getdistPickupDepot() <<  ", "
+//              << getdistDeliveryDepot() << std::endl;
     std::cout <<  "Pickup \n";
     pickup->dump();
     std::cout <<  "Delivery \n";
@@ -35,7 +35,7 @@ void Order::dump() const {
 }
 
 
-void Order::shortdump() const {
+void Order::dump() const {
     std::cout << "O#"<<oid << "("
               << getpid() << ","
               << getdid() << ") ";

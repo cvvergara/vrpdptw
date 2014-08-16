@@ -5,11 +5,12 @@
 
 #include <string>
 #include <vector>
+#include <math.h>
 
-class Route;    // forward reference
+//class Route;    // forward reference
 
-#include "problem.h"
-#include "tau.h"
+//#include "problem.h"
+//#include "tau.h"
 
 class Plot {
   private:
