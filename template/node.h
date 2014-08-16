@@ -5,9 +5,9 @@
 
 class Node {
 protected:
-    int nid;        // node number (0 = depot
-    double x;       // x location
-    double y;       // y location
+    int nid;        
+    double x;      
+    double y;     
 
 public:
 /*Accesors */
@@ -18,6 +18,7 @@ public:
     int setnid(int _nid)  { nid=_nid;};
     int setx(double _x)   { x=_x;};
     int sety(double _y)   { y=_y;};
+    void set(int _nid, double _x, double _y); 
 /****/
     bool isvalid() const { return nid > -1; };
     bool isSamePos(const Node &n) { return distance(n) == 0; };
@@ -34,7 +35,6 @@ public:
     bool operator>(const Node &n) const { return nid > n.nid; };
     Node& operator = (const Node &n);
 /* constructors & destructors */
-    void set(int _nid, double _x, double _y); 
     Node (const int &_nid,const double &_x, const double &_y) {
       nid=_nid;x=_x;y=_y;};
     Node(const Node &node) {

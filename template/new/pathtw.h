@@ -15,16 +15,17 @@
 */
 
 template <class knode> class Path {
-  private:
+  protected:
     knode home;
     knode dumpsite;
     std::deque<knode> path;
+    //std::deque<knode>::iterator pathIterator;
 
   public:
     
-    //typedef std::deque<Trashnode> Trashnodepath;
-    //typedef Trashnodepath::iterator iterator;
-    //typedef Trashnodepath::const_iterator const_iterator;
+    typedef typename std::deque<knode> nodepath;
+    typedef typename std::deque<knode>::iterator iterator;
+    typedef typename std::deque<knode>::const_iterator const_iterator;
 
     Path& operator=(const Path& n) {
         home = n.home;
@@ -45,9 +46,9 @@ template <class knode> class Path {
     knode& back() { return path.back(); };
 
     // iterators
-    //iterator begin() { return path.begin(); };
-    //iterator end() { return path.end(); };
-    //iterator rbegin() { return path.rbegin(); };
+    iterator begin() { return path.begin(); };
+    iterator end() { return path.end(); };
+    iterator rbegin() { return path.rbegin(); };
     //iterator rend() { return path.rend(); };
     //const_iterator cbegin() { return path.cbegin(); };
     //const_iterator cend() { return path.cend(); };
@@ -68,7 +69,7 @@ template <class knode> class Path {
     void push_front(knode& n) { path.push_front(n); };
     void pop_back() { path.pop_back(); };
     void pop_front() { path.pop_front(); };
-    //iterator insert(iterator it, const Trashnode& n) { return path.insert(it, n); };
+    iterator insert(iterator it, const knode& n) { return path.insert(it, n); };
     //iterator insert(iterator it, Trashnode& n) { return path.insert(it, n); };
     //iterator erase(iterator it) { return path.erase(it); };
     //iterator erase(iterator first, iterator last) { return path.erase(first, last); };
