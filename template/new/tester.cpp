@@ -14,7 +14,7 @@
 #include "node.h"
 #include "twnode.h"
 #include "trashnode.h"
-#include "pathtw.h"
+#include "twpath.h"
 #include "trashproblem.h"
 
 void TestDistanceFromLineSegmentToPoint( double segmentX1, double segmentY1, double segmentX2, double segmentY2, double pX, double pY ) {
