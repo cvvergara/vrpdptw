@@ -14,10 +14,10 @@
     void Dpnode::evaluate (const Dpnode &pred,double cargoLimit){  
         distPrev=distance(pred);      //vehicle last move
         totDist=pred.gettotDist();
-        twv=lateArrival(totDist);     //Time Window Violation
+        twv=latearrival(totDist);     //Time Window Violation
              
-        waitTime=earlyArrival(totDist)? opens()-totDist:0;
-        totDist+=waitTime+getServiceTime(); //totDist=opens()   should gice the same result
+        waitTime=earlyarrival(totDist)? opens()-totDist:0;
+        totDist+=waitTime+getservicetime(); //totDist=opens()   should gice the same result
 
         cargo=pred.getcargo()+getdemand();       //loading or unloading 
         cv= cargo>cargoLimit or cargo < 0;  //capacity Violation

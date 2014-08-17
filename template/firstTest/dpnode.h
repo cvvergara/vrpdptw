@@ -2,7 +2,7 @@
 #define DPNODE_H
 
 
-#include "vtwnode.h"
+#include "twnode.h"
 
 class Dpnode: public Twnode {
 private:

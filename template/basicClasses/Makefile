@@ -1,16 +1,14 @@
 
 CPP = g++
-UTIL = ../basicClasses
-CPPFLAGS = -g -O0 -MMD -MP -I$(UTIL)
-LDFLAGS = -lgd -I$(UTIL)
+CPPFLAGS = -g -O0 -MMD -MP
+LDFLAGS = -lgd
 
-
-SRCS = $(wildcard *.cpp) 
-OBJS = $(SRCS:.cpp=.o) $(wildcard $(UTIL)/*.o)
+SRCS = $(wildcard *.cpp)
+OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.d)
 
 
-all: tester
+all: $(OBJS) 
 
 tester: $(OBJS)
 	$(CPP) $^ -o $@ $(LDFLAGS)
@@ -27,6 +25,6 @@ valgrind: tester p50.txt
 .PHONY: clean
 
 clean:
-	rm -f tester $(SRCS:.cpp=.o) $(DEPS) out/*.png
+	rm -f tester $(OBJS) $(DEPS) out/*.png
 
 -include $(DEPS)

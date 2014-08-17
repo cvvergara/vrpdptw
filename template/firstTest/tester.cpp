@@ -12,7 +12,7 @@
 #include "twnode.h"
 #include "trashnode.h"
 #include "dpnode.h"
-#include "path.h"
+#include "twpath.h"
 
 
 void Usage() {
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
         std::cout << "n[1].distance(n[2]): " << n.distance(n2) << std::endl;
 
         Twnode tw;
-        tw.setvalues(2, 20, 30, 40, 120, 600, 5);
+        tw.set(2, 20, 30, 40, 120, 600, 5);
         tw.dump();
         std::cout << "tw.opens(): " << tw.opens() << std::endl;
         std::cout << "tw.closes(): " << tw.closes() << std::endl;
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         std::cout << "dtn.hasdemand(): " << dtn.hasdemand() << std::endl;
         std::cout << "dtn.hassupply(): " << dtn.hassupply() << std::endl;
         std::cout << "dtn.hasnogoods(): " << dtn.hasnogoods() << std::endl;
-        dtn.setvalues(3, 21, 32, 40, 120, 600, 5);
+        dtn.set(3, 21, 32, 40, 120, 600, 5);
         dtn.dump();
         std::cout << "dtn.isvalid(): " << dtn.isvalid() << std::endl;
         std::cout << "dtn.opens(): " << dtn.opens() << std::endl;
